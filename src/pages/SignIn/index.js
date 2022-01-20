@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import AuthLayout from "../../layouts/Auth";
@@ -19,20 +20,22 @@ export default function SignIn() {
   const [loadingSignIn, setLoadingSignIn] = useState(false);
 
   const api = useApi();
+  let history = useHistory();
 
   const { eventInfo } = useContext(EventInfoContext);
   const { setUserData } = useContext(UserContext);
-  
+
   function submit(event) {
     event.preventDefault();
     setLoadingSignIn(true);
 
     api.auth.signIn(email, password).then(response => {
       setUserData(response.data);
+      history.push("/dashboard");
     }).catch(error => {
       /* eslint-disable-next-line no-console */
       console.error(error);
-      
+
       if (error.response) {
         console.error(error.response);
       } else {
@@ -41,7 +44,7 @@ export default function SignIn() {
     }).then(() => {
       setLoadingSignIn(false);
     });
-  } 
+  }
 
   return (
     <AuthLayout background={eventInfo.backgroundImage}>
