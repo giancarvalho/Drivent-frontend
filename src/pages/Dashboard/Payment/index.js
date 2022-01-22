@@ -16,8 +16,6 @@ export default function Payment() {
   
   useEffect(() => {
     enrollment.getPersonalInformations().then(answer => {
-      console.log(answer.data);
-
       const { isOnlinePlan, hasHotel, payentConfirmed, } = answer.data;
       
       if (!answer.data) setHasEnrollment(false);
@@ -33,11 +31,13 @@ export default function Payment() {
 
   return <div>
     <Title>Ingresso e pagamento</Title>
-
+    {/* 
     { hasEnrollment 
       ?  ingress
       : <PreviousSectionNotCompleted /> 
-    }
+    } */}
+
+    <PaymentScreen />
     
   </div>;
 };

@@ -14,9 +14,9 @@ export default function CreditCardForm() {
   });
   const handleChange = React.useCallback(
     event => {
-      const { name, value } = event.target;
-      
-      setValues(v => ({ ...v, [name]: value.replaceAll(" ", "") }));
+      let { name, value } = event.target;
+      if (name === "number") value = value.replaceAll(" ", "");
+      setValues(v => ({ ...v, [name]: value }));
     },
     [setValues]
   );
@@ -29,62 +29,72 @@ export default function CreditCardForm() {
   const handleBlur = React.useCallback(() => setFocus(undefined), [setFocus]);
 
   return (
-    <FormContainer>
-      <Card {...values} focused={focused} hasRadialGradient={true} hasShadow={true} />
-      <Form>
+    <>
+      <FormContainer>
+        <Card {...values} focused={focused} hasRadialGradient={true} hasShadow={true} />
+        <Form>
 
-        <fieldset>
-          <InputMask label="Numero do Cartao"
-            name="number"
-            mask="9999 9999 9999 9999"
-            placeholder="Numero do Cartao"
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            value={values.number} />
+          <fieldset>
+            <InputMask label="Numero do Cartao"
+              name="number"
+              mask="9999 9999 9999 9999"
+              maskPlaceholder={null} 
+              placeholder="Numero do Cartao"
+              onChange={handleChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              value={values.number} />
          
-          <InputMask
-            label="name"
-            name="name"
-            mask={/^[a-zA-Z]+$/}
-            placeholder="Nome"
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            value={values.name}
-          />
-          <AuxContainer>
             <InputMask
-              name="expiration"
-              placeholder="MM/YY"
+              label="name"
+              type="text"
+              name="name"
+              mask={/^[a-zA-Z\s]*$/}
+              placeholder="Nome"
               onChange={handleChange}
               onFocus={handleFocus}
               onBlur={handleBlur}
-              value={values.expiration}
+              value={values.name}
             />
-            <InputMask
-              name="cvc"
-              placeholder="CVC"
-              onChange={handleChange}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              value={values.cvc}
-            />
-          </AuxContainer>
+            <AuxContainer>
+              <InputMask
+                name="expiration"
+                placeholder="MM/YY"
+                mask="99/99"
+                onChange={handleChange}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                value={values.expiration}
+              />
+              <InputMask
+                name="cvc"
+                placeholder="CVC"
+                mask="999"
+                onChange={handleChange}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                value={values.cvc}
+              />
+            </AuxContainer>
+         
+          </fieldset>
     
-        </fieldset>
-        <Button type="submit" onClick={() => console.log(values)}>Fazer pagamento</Button>
-      </Form>
-     
-    </FormContainer>
+        </Form>
+   
+      </FormContainer>
+      <MakePaymentButton onClick={() => console.log(values)}>Fazer pagamento</MakePaymentButton>
+    </>
   );
 }
 
 const Form = styled.form`
+  flex: 1 1 auto;
+  position: relative;
 
   fieldset { 
     display: flex;
     flex-direction: column;
+
   }
 
   input {
@@ -102,7 +112,12 @@ const Form = styled.form`
     }
   }
 
-  flex: 1 1 auto;
+  button {
+    position: absolute;
+    left: 0;
+  }
+
+
 `;
 
 const AuxContainer = styled.div`
@@ -121,4 +136,9 @@ const AuxContainer = styled.div`
 const FormContainer = styled.div`
   display: flex;
   gap: 30px;
+`;
+
+const MakePaymentButton = styled(Button)`
+  margin-top: 30px!important;
+
 `;

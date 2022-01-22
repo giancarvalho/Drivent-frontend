@@ -4,6 +4,12 @@ import styled from "styled-components";
 import CreditCardForm from "./CreditCardForm";
 
 export default function PaymentScreen() {
+  const enrollment = {
+    isOnline: false,
+    hasHotel: true,
+    price: 300
+  };
+
   const [cardInfo, setCardInfo] = useState({
     cvc: "",
     expiry: "",
@@ -12,13 +18,25 @@ export default function PaymentScreen() {
     number: "",
   });
 
+  function buildPlanDescription() {
+    let info = "Online";
+
+    if (!enrollment.isOnline) info = "Presencial sem Hotel";
+
+    if (enrollment.hasHotel) info = "Presencial + Hotel";
+
+    return info;
+  }
+
   return <PaymentContainer>
 
     <ChosenTicketSession>
       <SessionTitle>Ingresso escolhido</SessionTitle>
       <ReviewCardContainer>
-        <p>Presencial + Com Hotel</p>
-        <span>R$ 600</span>
+        <p>
+          {buildPlanDescription()}      
+        </p>
+        <span>R$ {enrollment.price}</span>
       </ReviewCardContainer>
     </ChosenTicketSession>
     <PaymentInfoSession>
