@@ -12,12 +12,16 @@ export default function Payment() {
   const [ hasEnrollment, setHasEnrollment ] = useState(true);
   const [ hasIngress, setHasIngress ] = useState(undefined);
   const [ paymentConfirmed, setPaymentConfirmed ] = useState(undefined);
+  const [ ingressInfo, setIngressInfo ] = useState({ isOnline: undefined, hasHotel: undefined, price: 0 });
   
   useEffect(() => {
     enrollment.getPersonalInformations().then(answer => {
+      console.log(answer.data);
+
       const { isOnlinePlan, hasHotel, payentConfirmed, } = answer.data;
       
       if (!answer.data) setHasEnrollment(false);
+
       if (hasHotel !== null && isOnlinePlan !== null) setHasIngress(true);
       if (payentConfirmed === null || payentConfirmed === false) setPaymentConfirmed(false);
       if (payentConfirmed) setPaymentConfirmed(true);
