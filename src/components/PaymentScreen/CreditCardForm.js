@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import "@comeon/react-credit-card/dist/react-credit-card.css";
 import InputMask from "react-input-mask";
-import Button from "../../../components/Form/Button";
+import Button from "../Form/Button";
 
 export default function CreditCardForm() {
   const [values, setValues] = React.useState({

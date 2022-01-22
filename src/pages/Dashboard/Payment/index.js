@@ -1,4 +1,4 @@
-import PaymentScreen from "./PaymentScreen";
+import PaymentScreen from "../../../components/PaymentScreen/index";
 import PreviousSectionNotCompleted from "./PreviousSectionNotCompleted";
 import ReviewPayment from "./ReviewPayment";
 import SelectIngress from "./SelectIngress";
