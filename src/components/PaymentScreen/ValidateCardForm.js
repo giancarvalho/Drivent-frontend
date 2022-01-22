@@ -22,6 +22,8 @@ export default function validateCardForm(values) {
     },
   };
 
+  console.log(valid.number(values.number).isValid);
+
   for (const value of Object.values(validation)) {
     if (!value.isValid) {
       toast.error(value.message);

@@ -1,5 +1,5 @@
 import Card from "@comeon/react-credit-card";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import validateCardForm from "./ValidateCardForm";
 import "@comeon/react-credit-card/dist/react-credit-card.css";
@@ -13,6 +13,7 @@ export default function CreditCardForm() {
     expiration: "",
     cvc: "",
   });
+
   const handleChange = React.useCallback(
     (event) => {
       let { name, value } = event.target;
@@ -29,7 +30,10 @@ export default function CreditCardForm() {
   );
   const handleBlur = React.useCallback(() => setFocus(undefined), [setFocus]);
 
-  function submitPayment() {
+  function submitPayment(e) {
+    e.preventDefault();
+
+    console.log(values);
     const isCardDataValid = validateCardForm(values);
     if (!isCardDataValid) {
       return console.log("data invalid");
@@ -37,7 +41,7 @@ export default function CreditCardForm() {
 
     console.log("submitting");
   }
-
+  console.log("renderingr");
   return (
     <>
       <FormContainer>
@@ -47,7 +51,7 @@ export default function CreditCardForm() {
           hasRadialGradient={true}
           hasShadow={true}
         />
-        <Form>
+        <Form onSubmit={(e) => submitPayment(e)}>
           <fieldset>
             <InputMask
               label="Numero do Cartao"
@@ -93,19 +97,18 @@ export default function CreditCardForm() {
                 value={values.cvc}
               />
             </AuxContainer>
+            <SubmitPaymentButton type="submit">
+              Fazer pagamento
+            </SubmitPaymentButton>
           </fieldset>
         </Form>
       </FormContainer>
-      <MakePaymentButton onClick={submitPayment}>
-        Fazer pagamento
-      </MakePaymentButton>
     </>
   );
 }
 
 const Form = styled.form`
   flex: 1 1 auto;
-  position: relative;
 
   fieldset {
     display: flex;
@@ -156,10 +159,12 @@ const AuxContainer = styled.div`
 `;
 
 const FormContainer = styled.div`
+  position: relative;
   display: flex;
   gap: 30px;
 `;
 
-const MakePaymentButton = styled(Button)`
-  margin-top: 30px !important;
+const SubmitPaymentButton = styled(Button)`
+  position: absolute;
+  bottom: -60px;
 `;
