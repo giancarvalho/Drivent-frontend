@@ -1,5 +1,5 @@
 import Card from "@comeon/react-credit-card";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import validateCardForm from "./ValidateCardForm";
 import "@comeon/react-credit-card/dist/react-credit-card.css";
@@ -7,6 +7,7 @@ import InputMask from "react-input-mask";
 import Button from "../Form/Button";
 
 export default function CreditCardForm() {
+  const [isFormDisabled, setIsFormDisabled] = useState(false);
   const [values, setValues] = React.useState({
     name: "",
     number: "",
@@ -32,10 +33,12 @@ export default function CreditCardForm() {
 
   function submitPayment(e) {
     e.preventDefault();
-
-    console.log(values);
     const isCardDataValid = validateCardForm(values);
+
+    setIsFormDisabled(true);
+
     if (!isCardDataValid) {
+      setIsFormDisabled(false);
       return console.log("data invalid");
     }
 
@@ -52,7 +55,7 @@ export default function CreditCardForm() {
           hasShadow={true}
         />
         <Form onSubmit={(e) => submitPayment(e)}>
-          <fieldset>
+          <fieldset disabled={isFormDisabled}>
             <InputMask
               label="Numero do Cartao"
               name="number"
