@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&family=Roboto&display=swap');
+
+@import "@comeon/react-credit-card/dist/react-credit-card.css";
 
 * {
   box-sizing: border-box;
