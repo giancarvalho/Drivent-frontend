@@ -5,8 +5,13 @@ import validateCardForm from "./ValidateCardForm";
 import "@comeon/react-credit-card/dist/react-credit-card.css";
 import InputMask from "react-input-mask";
 import Button from "../Form/Button";
+import useApi from "../../hooks/useApi";
+import { toast } from "react-toastify";
 
-export default function CreditCardForm() {
+export default function CreditCardForm({
+  setisPurchaseConfirmed,
+  ingressData,
+}) {
   const [isFormDisabled, setIsFormDisabled] = useState(false);
   const [values, setValues] = React.useState({
     name: "",
@@ -14,6 +19,7 @@ export default function CreditCardForm() {
     expiration: "",
     cvc: "",
   });
+  const { enrollment } = useApi();
 
   const handleChange = React.useCallback(
     (event) => {
@@ -31,20 +37,31 @@ export default function CreditCardForm() {
   );
   const handleBlur = React.useCallback(() => setFocus(undefined), [setFocus]);
 
-  function submitPayment(e) {
+  function submitPurchase(e) {
     e.preventDefault();
-    const isCardDataValid = validateCardForm(values);
-
     setIsFormDisabled(true);
+    const isCardDataValid = validateCardForm(values);
 
     if (!isCardDataValid) {
       setIsFormDisabled(false);
-      return console.log("data invalid");
+      return;
     }
 
-    console.log("submitting");
+    enrollment
+      .savePlan({
+        ...ingressData,
+        payentConfirmed: true,
+      })
+      .then(() => {
+        toast("Seu ingresso foi confirmado!");
+        setisPurchaseConfirmed(true);
+      })
+      .catch(() => {
+        setIsFormDisabled(false);
+        toast.error("Não foi possível concluir a sua compra");
+      });
   }
-  console.log("renderingr");
+
   return (
     <>
       <FormContainer>
@@ -54,7 +71,7 @@ export default function CreditCardForm() {
           hasRadialGradient={true}
           hasShadow={true}
         />
-        <Form onSubmit={(e) => submitPayment(e)}>
+        <Form onSubmit={(e) => submitPurchase(e)}>
           <fieldset disabled={isFormDisabled}>
             <InputMask
               label="Numero do Cartao"
