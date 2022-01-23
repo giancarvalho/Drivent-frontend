@@ -27,13 +27,13 @@ export default function Hotel() {
     if (enrollInfo === "notPaid") {
       return (
         <BanMessage>
-          <h1>Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem</h1>
+          <h1>Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem.</h1>
         </BanMessage>
       );
     } else if (enrollInfo === "noHotel") {
       return (
         <BanMessage>
-          <h1>Sua modalidade de ingresso não inclui hospedagem. Prossiga para a escolha de atividades</h1>
+          <h1>Sua modalidade de ingresso não inclui hospedagem. Prossiga para a escolha de atividades.</h1>
         </BanMessage>
       );
     } else {
@@ -46,11 +46,15 @@ export default function Hotel() {
   }
 }
 
-const BanMessage = styled.h1`
+const BanMessage = styled.div`
   width: 100%;
   height: 100%;
   display:flex;
   justify-content: center;
   align-items: center;
   color: #8E8E8E;
+
+  h1{
+    text-align: center;
+  }
 `;
