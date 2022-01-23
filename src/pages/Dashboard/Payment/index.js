@@ -1,18 +1,16 @@
-import PaymentScreen from "./PaymentScreen";
-import ReviewPayment from "./ReviewPayment";
-import SelectIngress from "./SelectIngress";
-
-import IncompleteEnrollment from "./IncompleteEnrollment";
+import PaymentScreen from "../../../components/PaymentScreen/index";
+import SelectIngress from "../../../components/Ingress/SelectIngress";
+import IncompleteEnrollment from "../../../components/Router/IncompleteEnrollment";
 import { Title } from "../../../components/_shared/Texts";
 import { useEffect, useState } from "react";
 import useApi from "../../../hooks/useApi";
+import { toast } from "react-toastify";
 
 export default function Payment() {
   const { enrollment } = useApi();
 
   const [hasEnrollment, setHasEnrollment] = useState(undefined);
   const [hasIngress, setHasIngress] = useState(undefined);
-  const [paymentConfirmed, setPaymentConfirmed] = useState(undefined);
   const [ingressInfo, setIngressInfo] = useState({
     isOnline: null,
     hasHotel: null,
@@ -23,29 +21,17 @@ export default function Payment() {
     enrollment
       .getPersonalInformations()
       .then((answer) => {
-        const { isOnlinePlan, hasHotel, payentConfirmed } = answer.data;
-        setIngressInfo(answer.data);
-        if (!answer.data) setHasEnrollment(false);
-
-        const { isOnlinePlan, hasHotel, payentConfirmed } = answer.data;
+        const { isOnlinePlan, hasHotel } = answer.data;
 
         setHasEnrollment(answer.data ? true : false);
 
         if (hasHotel !== null && isOnlinePlan !== null) setHasIngress(true);
-        if (payentConfirmed === null || payentConfirmed === false)
-          setPaymentConfirmed(false);
-        if (payentConfirmed) setPaymentConfirmed(true);
       })
-      .catch((answer) => console.log(answer.response.data));
+      .catch((answer) => toast.error(answer.response.data));
   }, []);
 
-  const payment = paymentConfirmed ? (
-    <ReviewPayment ingressInfo={ingressInfo} />
-  ) : (
-    <PaymentScreen ingressInfo={ingressInfo} />
-  );
   const ingress = hasIngress ? (
-    payment
+    <PaymentScreen ingressInfo={ingressInfo} />
   ) : (
     <SelectIngress
       ingressInfo={ingressInfo}
