@@ -4,20 +4,20 @@ import styled from "styled-components";
 import CreditCardForm from "./CreditCardForm";
 import CheckImage from "../../assets/images/check.png";
 
-export default function PaymentScreen({ ingressData }) {
+export default function PaymentScreen({ ingressInfo }) {
   const [plan, setPlan] = useState({ price: 100, description: "Online" });
 
   const [isPurchaseConfirmed, setisPurchaseConfirmed] = useState(
-    ingressData.payentConfirmed
+    ingressInfo.payentConfirmed
   );
 
   useEffect(() => {
-    if (!ingressData.isOnlinePlan)
+    if (!ingressInfo.isOnlinePlan)
       setPlan({ price: 250, description: "Presencial sem hotel" });
 
-    if (ingressData.hasHotel)
+    if (ingressInfo.hasHotel)
       setPlan({ price: 600, description: "Presencial + Hotel" });
-  }, [ingressData]);
+  }, [ingressInfo]);
 
   return (
     <PaymentContainer>
@@ -41,7 +41,7 @@ export default function PaymentScreen({ ingressData }) {
         ) : (
           <CreditCardForm
             setisPurchaseConfirmed={setisPurchaseConfirmed}
-            ingressData={ingressData}
+            ingressInfo={ingressInfo}
           />
         )}
       </PaymentInfoSession>

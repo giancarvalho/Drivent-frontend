@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 
 export default function CreditCardForm({
   setisPurchaseConfirmed,
-  ingressData,
+  ingressInfo,
 }) {
   const [isFormDisabled, setIsFormDisabled] = useState(false);
   const [values, setValues] = React.useState({
@@ -49,7 +49,7 @@ export default function CreditCardForm({
 
     enrollment
       .savePlan({
-        ...ingressData,
+        ...ingressInfo,
         payentConfirmed: true,
       })
       .then(() => {

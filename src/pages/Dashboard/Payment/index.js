@@ -35,7 +35,7 @@ export default function Payment() {
   }, []);
 
   const ingress = hasIngress ? (
-    <PaymentScreen ingressData={ingressInfo} />
+    <PaymentScreen ingressInfo={ingressInfo} />
   ) : (
     <SelectIngress />
   );
