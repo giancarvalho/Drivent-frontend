@@ -1,7 +1,8 @@
 import PaymentScreen from "./PaymentScreen";
-import PreviousSectionNotCompleted from "./PreviousSectionNotCompleted";
 import ReviewPayment from "./ReviewPayment";
 import SelectIngress from "./SelectIngress";
+
+import IncompleteEnrollment from "./IncompleteEnrollment";
 import { Title, } from "../../../components/_shared/Texts";
 import { useEffect, useState } from "react";
 import useApi from "../../../hooks/useApi";
@@ -9,10 +10,10 @@ import useApi from "../../../hooks/useApi";
 export default function Payment() {
   const { enrollment } = useApi();
 
-  const [ hasEnrollment, setHasEnrollment ] = useState(true);
+  const [ hasEnrollment, setHasEnrollment ] = useState(undefined);
   const [ hasIngress, setHasIngress ] = useState(undefined);
   const [ paymentConfirmed, setPaymentConfirmed ] = useState(undefined);
-  const [ ingressInfo, setIngressInfo ] = useState({ isOnline: undefined, hasHotel: undefined, price: 0 });
+  const [ ingressInfo, setIngressInfo ] = useState({ isOnline: null, hasHotel: null, price: 0 });
   
   useEffect(() => {
     enrollment.getPersonalInformations().then(answer => {
@@ -20,24 +21,24 @@ export default function Payment() {
 
       const { isOnlinePlan, hasHotel, payentConfirmed, } = answer.data;
       
-      if (!answer.data) setHasEnrollment(false);
+      setHasEnrollment(answer.data ? true : false );
 
       if (hasHotel !== null && isOnlinePlan !== null) setHasIngress(true);
       if (payentConfirmed === null || payentConfirmed === false) setPaymentConfirmed(false);
       if (payentConfirmed) setPaymentConfirmed(true);
-    }).catch();
+    }).catch(answer => console.log(answer.response.data));
   }, []);
 
-  const payment = paymentConfirmed ? <ReviewPayment /> : <PaymentScreen />;
-  const ingress = hasIngress ? payment : <SelectIngress />;
+  const payment = paymentConfirmed ? <ReviewPayment ingressInfo={ingressInfo} /> : <PaymentScreen ingressInfo={ingressInfo} />;
+  const ingress = hasIngress ? payment : <SelectIngress  ingressInfo={ingressInfo} setIngressInfo={setIngressInfo} setHasIngress={setHasIngress} />;
 
-  return <div>
+  return <>
     <Title>Ingresso e pagamento</Title>
 
-    { hasEnrollment 
+    { hasEnrollment === undefined ? <></> : hasEnrollment 
       ?  ingress
-      : <PreviousSectionNotCompleted /> 
+      : <IncompleteEnrollment /> 
     }
     
-  </div>;
+  </>;
 };

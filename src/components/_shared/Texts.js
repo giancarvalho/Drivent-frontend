@@ -6,7 +6,7 @@ function Title({ children }) {
 }
 
 function SessionTitle({ children }) {
-  return <SessionTypography variant="h5">{children}</SessionTypography>; 
+  return <SessionTypography variant="h6">{children}</SessionTypography>; 
 }
 
 const StyledTypography = styled(Typography)`
@@ -18,8 +18,21 @@ const SessionTypography = styled(Typography)`
   margin-bottom: 15px !important;
 `;
 
+const PreviousSectionNotCompleted = styled.div`
+  width: 100%;
+  height: calc(100% - 100px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-family: roboto;
+  color: #8e8e8e;
+  row-gap: 5px;
+`;
+
 export {
   Title,
   SessionTitle,
-
+  PreviousSectionNotCompleted,
 };
