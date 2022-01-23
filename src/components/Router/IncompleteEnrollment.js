@@ -1,4 +1,4 @@
-import { PreviousSectionNotCompleted } from "../../../components/_shared/Texts";
+import { PreviousSectionNotCompleted } from "../_shared/Texts";
 
 export default function IncompleteEnrollment() {
   return (

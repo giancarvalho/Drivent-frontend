@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SessionTitle } from "../../../components/_shared/Texts";
+import { SessionTitle } from "../_shared/Texts";
 import styled from "styled-components";
 import CreditCardForm from "./CreditCardForm";
 

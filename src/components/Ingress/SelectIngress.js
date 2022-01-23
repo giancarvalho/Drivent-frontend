@@ -1,5 +1,5 @@
-import { SessionTitle, } from "../../../components/_shared/Texts";
-import Button from "../../../components/Form/Button";
+import { SessionTitle, } from "../_shared/Texts";
+import Button from "../Form/Button";
 import styled from "styled-components";
 import Option from "./Option";
 
