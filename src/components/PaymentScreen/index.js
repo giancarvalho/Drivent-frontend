@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useState, useEffect } from "react";
 import { SessionTitle } from "../_shared/Texts";
 import styled from "styled-components";
@@ -48,36 +47,6 @@ export default function PaymentScreen({ ingressInfo }) {
       </PaymentInfoSession>
     </PaymentContainer>
   );
-=======
-import { useState } from "react";
-import { SessionTitle } from "../_shared/Texts";
-import styled from "styled-components";
-import CreditCardForm from "./CreditCardForm";
-
-export default function PaymentScreen() {
-  const [cardInfo, setCardInfo] = useState({
-    cvc: "",
-    expiry: "",
-    focus: "",
-    name: "",
-    number: "",
-  });
-
-  return <PaymentContainer>
-
-    <ChosenTicketSession>
-      <SessionTitle>Ingresso escolhido</SessionTitle>
-      <ReviewCardContainer>
-        <p>Presencial + Com Hotel</p>
-        <span>R$ 600</span>
-      </ReviewCardContainer>
-    </ChosenTicketSession>
-    <PaymentInfoSession>
-      <SessionTitle>Pagamento</SessionTitle>
-      <CreditCardForm />
-    </PaymentInfoSession>
-  </PaymentContainer>;
->>>>>>> 9149432fb3881bf4b3c63f9e902fcbf695872fa8
 }
 
 const ChosenTicketSession = styled.div`
@@ -85,11 +54,7 @@ const ChosenTicketSession = styled.div`
 `;
 
 const PaymentContainer = styled.div`
-<<<<<<< HEAD
   font-family: "Roboto", sans-serif;
-=======
-  font-family: 'Roboto', sans-serif;
->>>>>>> 9149432fb3881bf4b3c63f9e902fcbf695872fa8
 `;
 
 const ReviewCardContainer = styled.div`
@@ -102,7 +67,6 @@ const ReviewCardContainer = styled.div`
   color: #454545;
   font-size: 16px;
   border-radius: 20px;
-<<<<<<< HEAD
   background-color: #ffeed2;
 
   span {
@@ -137,17 +101,4 @@ const PaymentConfirmedContainer = styled.div`
   span:first-child {
     font-weight: bold;
   }
-=======
-  background-color:#FFEED2;
-
-  span {
-    color:#898989;
-    margin-top: 10px;
-  }
-
-`;
-
-const PaymentInfoSession = styled.div`
-
->>>>>>> 9149432fb3881bf4b3c63f9e902fcbf695872fa8
 `;
