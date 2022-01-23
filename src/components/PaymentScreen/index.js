@@ -1,39 +1,31 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { SessionTitle } from "../_shared/Texts";
 import styled from "styled-components";
 import CreditCardForm from "./CreditCardForm";
 import CheckImage from "../../assets/images/check.png";
 
-export default function PaymentScreen() {
-  //mocked enrollment. replace with props {enrollment}
-  const ingressData = {
-    isOnlinePlan: false,
-    hasHotel: true,
-    price: 300,
-    payentConfirmed: false,
-    userId: 3,
-  };
+export default function PaymentScreen({ ingressData }) {
+  const [plan, setPlan] = useState({ price: 100, description: "Online" });
+
   const [isPurchaseConfirmed, setisPurchaseConfirmed] = useState(
     ingressData.payentConfirmed
   );
 
-  function buildPlanDescription() {
-    let info = "Online";
+  useEffect(() => {
+    if (!ingressData.isOnlinePlan)
+      setPlan({ price: 250, description: "Presencial sem hotel" });
 
-    if (!ingressData.isOnlinePlan) info = "Presencial sem Hotel";
-
-    if (ingressData.hasHotel) info = "Presencial + Hotel";
-
-    return info;
-  }
+    if (ingressData.hasHotel)
+      setPlan({ price: 600, description: "Presencial + Hotel" });
+  }, [ingressData]);
 
   return (
     <PaymentContainer>
       <ChosenTicketSession>
         <SessionTitle>Ingresso escolhido</SessionTitle>
         <ReviewCardContainer>
-          <p>{buildPlanDescription()}</p>
-          <span>R$ {ingressData.price}</span>
+          <p>{plan.description}</p>
+          <span>R$ {plan.price}</span>
         </ReviewCardContainer>
       </ChosenTicketSession>
       <PaymentInfoSession>
