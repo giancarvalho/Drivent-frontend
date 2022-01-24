@@ -22,6 +22,8 @@ export default function Payment() {
       .getPersonalInformations()
       .then((answer) => {
         const { isOnlinePlan, hasHotel } = answer.data;
+        
+        if (!answer.data) setHasEnrollment(false);
 
         if (answer.data) {
           setHasEnrollment(true);
@@ -50,7 +52,7 @@ export default function Payment() {
       <Title>Ingresso e pagamento</Title>
 
       {hasEnrollment === undefined ? (
-        <IncompleteEnrollment />
+        <></>
       ) : hasEnrollment ? (
         ingress
       ) : (
