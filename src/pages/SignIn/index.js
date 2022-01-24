@@ -22,7 +22,7 @@ export default function SignIn() {
 
   const { eventInfo } = useContext(EventInfoContext);
   const { setUserData } = useContext(UserContext);
-  
+
   function submit(event) {
     event.preventDefault();
     setLoadingSignIn(true);
@@ -32,16 +32,18 @@ export default function SignIn() {
     }).catch(error => {
       /* eslint-disable-next-line no-console */
       console.error(error);
-      
+
       if (error.response) {
-        console.error(error.response);
+        for (const detail of error.response.data.details) {
+          toast(detail);
+        }
       } else {
         toast("Não foi possível conectar ao servidor!");
       }
     }).then(() => {
       setLoadingSignIn(false);
     });
-  } 
+  }
 
   return (
     <AuthLayout background={eventInfo.backgroundImage}>
