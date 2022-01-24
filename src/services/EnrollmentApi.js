@@ -5,16 +5,24 @@ export default class EnrollmentApi extends AuthenticatedApi {
   save(body) {
     return api.post("/enrollments", body, {
       headers: {
-        ...this.getAuthorizationHeader()
-      }
+        ...this.getAuthorizationHeader(),
+      },
     });
   }
 
   getPersonalInformations() {
     return api.get("/enrollments", {
       headers: {
-        ...this.getAuthorizationHeader()
-      }
+        ...this.getAuthorizationHeader(),
+      },
+    });
+  }
+
+  savePlan(body) {
+    return api.post("/enrollments/plan", body, {
+      headers: {
+        ...this.getAuthorizationHeader(),
+      },
     });
   }
 }
