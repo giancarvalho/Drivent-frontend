@@ -1,5 +1,4 @@
 import Card from "@comeon/react-credit-card";
-<<<<<<< HEAD
 import React, { useState } from "react";
 import styled from "styled-components";
 import validateCardForm from "./ValidateCardForm";
@@ -14,18 +13,10 @@ export default function CreditCardForm({
   ingressInfo,
 }) {
   const [isFormDisabled, setIsFormDisabled] = useState(false);
-=======
-import React from "react";
-import styled from "styled-components";
-import Input from "../Form/Input";
-
-export default function CreditCardForm() {
->>>>>>> 9149432fb3881bf4b3c63f9e902fcbf695872fa8
   const [values, setValues] = React.useState({
     name: "",
     number: "",
     expiration: "",
-<<<<<<< HEAD
     cvc: "",
   });
   const { enrollment } = useApi();
@@ -35,30 +26,17 @@ export default function CreditCardForm() {
       let { name, value } = event.target;
       if (name === "number") value = value.replaceAll(" ", "");
       setValues((v) => ({ ...v, [name]: value }));
-=======
-    cvc: ""
-  });
-  const handleChange = React.useCallback(
-    event => {
-      const { name, value } = event.target;
-      setValues(v => ({ ...v, [name]: value }));
->>>>>>> 9149432fb3881bf4b3c63f9e902fcbf695872fa8
     },
     [setValues]
   );
 
   const [focused, setFocus] = React.useState(undefined);
   const handleFocus = React.useCallback(
-<<<<<<< HEAD
     (event) => setFocus(event.target.name),
-=======
-    event => setFocus(event.target.name),
->>>>>>> 9149432fb3881bf4b3c63f9e902fcbf695872fa8
     [setFocus]
   );
   const handleBlur = React.useCallback(() => setFocus(undefined), [setFocus]);
 
-<<<<<<< HEAD
   function submitPurchase(e) {
     e.preventDefault();
     setIsFormDisabled(true);
@@ -146,57 +124,10 @@ export default function CreditCardForm() {
         </Form>
       </FormContainer>
     </>
-=======
-  return (
-    <FormContainer>
-      <Card {...values} focused={focused} />
-      <Form>
-
-        <fieldset>
-          <Input label="Numero do Cartao"
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            value={values.number} />
-
-          <label>Card Number</label>
-          <input
-            name="number"
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            value={values.number}
-          />
- 
-          <label>Expiration</label>
-          <input
-            name="expiration"
-            placeholder="MM/YY"
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            value={values.expiration}
-          />
-
-          <label>CVC</label>
-          <input
-            name="cvc"
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            value={values.cvc}
-          />
-
-        </fieldset>
-      </Form>
-
-    </FormContainer>
->>>>>>> 9149432fb3881bf4b3c63f9e902fcbf695872fa8
   );
 }
 
 const Form = styled.form`
-<<<<<<< HEAD
   flex: 1 1 auto;
 
   fieldset {
@@ -244,17 +175,10 @@ const AuxContainer = styled.div`
 
   input:last-child {
     width: 25%;
-=======
-
-  fieldset { 
-    display: flex;
-    flex-direction: column;
->>>>>>> 9149432fb3881bf4b3c63f9e902fcbf695872fa8
   }
 `;
 
 const FormContainer = styled.div`
-<<<<<<< HEAD
   position: relative;
   display: flex;
   gap: 30px;
@@ -263,7 +187,4 @@ const FormContainer = styled.div`
 const SubmitPaymentButton = styled(Button)`
   position: absolute;
   bottom: -60px;
-=======
-  display: flex;
->>>>>>> 9149432fb3881bf4b3c63f9e902fcbf695872fa8
 `;

@@ -12,7 +12,7 @@ export default function Payment() {
   const [hasEnrollment, setHasEnrollment] = useState(undefined);
   const [hasIngress, setHasIngress] = useState(undefined);
   const [ingressInfo, setIngressInfo] = useState({
-    isOnline: null,
+    isOnlinePlan: null,
     hasHotel: null,
     price: 0,
   });
@@ -23,9 +23,14 @@ export default function Payment() {
       .then((answer) => {
         const { isOnlinePlan, hasHotel } = answer.data;
 
-        setHasEnrollment(answer.data ? true : false);
-
-        if (hasHotel !== null && isOnlinePlan !== null) setHasIngress(true);
+        if (answer.data) {
+          setHasEnrollment(true);
+          setIngressInfo(answer.data);
+        }
+        if (hasHotel !== null && isOnlinePlan !== null) {
+          setIngressInfo(answer.data);
+          setHasIngress(true);
+        }
       })
       .catch((answer) => toast.error(answer.response.data));
   }, []);

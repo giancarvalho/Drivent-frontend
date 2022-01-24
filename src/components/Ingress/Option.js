@@ -2,23 +2,23 @@ import styled from "styled-components";
 
 export default function Option(props) {
   const { online, presential, withHotel, withoutHotel, ingressInfo, setIngressInfo } = props;
-  const { isOnline, hasHotel } = ingressInfo;
+  const { isOnlinePlan, hasHotel } = ingressInfo;
 
   function handleClick(button) {
     switch (button) {
     case "presential":
-      if (isOnline === null || isOnline === true) {
-        setIngressInfo({ ...ingressInfo, isOnline: false, price: 250, hasHotel: null });
+      if (isOnlinePlan === null || isOnlinePlan === true) {
+        setIngressInfo({ ...ingressInfo, isOnlinePlan: false, price: 250, hasHotel: null });
       } else {
-        setIngressInfo({ ...ingressInfo, isOnline: null, price: 0, hasHotel: null });
+        setIngressInfo({ ...ingressInfo, isOnlinePlan: null, price: 0, hasHotel: null });
       }
       break;
     
     case "online":
-      if (isOnline === null || isOnline === false) {
-        setIngressInfo({ ...ingressInfo, isOnline: true, price: 100, hasHotel: null });
+      if (isOnlinePlan === null || isOnlinePlan === false) {
+        setIngressInfo({ ...ingressInfo, isOnlinePlan: true, price: 100, hasHotel: null });
       } else {
-        setIngressInfo({ ...ingressInfo, isOnline: null, price: 0, hasHotel: null });
+        setIngressInfo({ ...ingressInfo, isOnlinePlan: null, price: 0, hasHotel: null });
       }
       break;
 
@@ -45,14 +45,14 @@ export default function Option(props) {
   return (
     <>
       {presential ? 
-        <Opt selected={isOnline === false && presential} onClick={() => handleClick("presential")}>
+        <Opt selected={isOnlinePlan === false && presential} onClick={() => handleClick("presential")}>
           <p className="mode" >Presencial</p>
           <p className="price" >R$ 250</p>
         </Opt> : <></>
       }
       
       {online ?
-        <Opt selected={isOnline && online} onClick={() => handleClick("online")}>
+        <Opt selected={isOnlinePlan && online} onClick={() => handleClick("online")}>
           <p className="mode" >Online</p>
           <p className="price" >R$ 100</p>
         </Opt> : <></>
