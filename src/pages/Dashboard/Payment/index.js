@@ -1,6 +1,6 @@
 import PaymentScreen from "../../../components/PaymentScreen/index";
 import SelectIngress from "../../../components/Ingress/SelectIngress";
-import IncompleteEnrollment from "../../../components/Router/IncompleteEnrollment";
+import IncompleteEnrollment from "../../../components/Ingress/IncompleteEnrollment";
 import { Title } from "../../../components/_shared/Texts";
 import { useEffect, useState } from "react";
 import useApi from "../../../hooks/useApi";
@@ -50,7 +50,7 @@ export default function Payment() {
       <Title>Ingresso e pagamento</Title>
 
       {hasEnrollment === undefined ? (
-        <></>
+        <IncompleteEnrollment />
       ) : hasEnrollment ? (
         ingress
       ) : (
