@@ -21,7 +21,7 @@ export default function Activities() {
 
   let cantShowActivity = false;
   
-  if (ingressInfo.payentConfirmed === false) {
+  if (ingressInfo.payentConfirmed === false || ingressInfo.payentConfirmed === undefined ) {
     cantShowActivity = <PreviousSectionNotCompleted><p>Você precisa ter confirmado pagamento antes</p><p>de fazer a escolha de atividades</p></PreviousSectionNotCompleted>;
   } else if (ingressInfo.isOnlinePlan === true) {
     cantShowActivity = <PreviousSectionNotCompleted><p>Sua modalidade de ingresso não necessita escolher</p><p>atividade. Você terá acesso a todas as atividades</p></PreviousSectionNotCompleted>;
