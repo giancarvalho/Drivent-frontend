@@ -10,6 +10,6 @@ export default function useApi() {
     user: new UserApi(),
     auth: new AuthApi(),
     cep: new CepApi(),
-    enrollment: new EnrollmentApi()
+    enrollment: new EnrollmentApi(),
   };
 }
