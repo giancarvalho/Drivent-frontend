@@ -2,12 +2,15 @@ import styled from "styled-components";
 import { SessionTitle } from "../../components/_shared/Texts";
 import ActivityCard from "./ActivityCard";
 
-export default function ActivityBoard() {
+export default function ActivityBoard({ hallData }) {
+  const { name: hallName, activities } = hallData;
   return (
     <BoardContainer>
-      <SessionTitle>Auditorio Principal</SessionTitle>
+      <SessionTitle>{hallName}</SessionTitle>
       <Board>
-        <ActivityCard />
+        {activities.map((activity, index) => (
+          <ActivityCard activityData={activity} key={index} />
+        ))}
       </Board>
     </BoardContainer>
   );

@@ -6,6 +6,7 @@ import {
 } from "../../../components/_shared/Texts";
 import { toast } from "react-toastify";
 import ActivitiesGrid from "../../../components/ActivitiesGrid/index";
+import ActivityContext from "../../../contexts/ActivitiesContext";
 
 export default function Activities() {
   const { enrollment } = useApi();
@@ -49,10 +50,10 @@ export default function Activities() {
   }
 
   return (
-    <>
+    <ActivityContext.Provider value={{ working: true }}>
       <Title>Escolha de atividades</Title>
       {/* {cantShowActivity} */}
       <ActivitiesGrid />
-    </>
+    </ActivityContext.Provider>
   );
 }
