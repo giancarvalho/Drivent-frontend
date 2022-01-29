@@ -65,7 +65,7 @@ const mockActivities = [
     hallId: 2,
     dateId: 5,
     hall: {
-      id: 2,
+      id: 3,
       name: "Salão Oval",
     },
   },
@@ -79,8 +79,36 @@ const mockActivities = [
     hallId: 2,
     dateId: 5,
     hall: {
-      id: 2,
+      id: 1,
       name: "Salão Oval",
+    },
+  },
+  {
+    id: 1,
+    name: "Minecraft",
+    startAt: "11:00",
+    endAt: "12:00",
+    maximumCapacity: 50,
+    availableCapacity: 50,
+    hallId: 1,
+    dateId: 4,
+    hall: {
+      id: 2,
+      name: "Salao B",
+    },
+  },
+  {
+    id: 1,
+    name: "Minecraft",
+    startAt: "09:00",
+    endAt: "11:00",
+    maximumCapacity: 50,
+    availableCapacity: 50,
+    hallId: 1,
+    dateId: 4,
+    hall: {
+      id: 2,
+      name: "Salao B",
     },
   },
 ];

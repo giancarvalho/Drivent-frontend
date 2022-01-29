@@ -1,34 +1,33 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import { RiLoginBoxLine } from "react-icons/ri";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+import dayjs from "dayjs";
 import ActivityContext from "../../contexts/ActivitiesContext";
+import SubscribedButton from "./SubscribeButton";
 
 export default function ActivityCard({ activityData }) {
   const { name, startAt, endAt, availableCapacity } = activityData;
+  const duration =
+    dayjs(`2022-01-01 ${endAt}`).diff(`2022-01-01 ${startAt}`, "m") / 60;
   const { working } = useContext(ActivityContext);
 
   return (
-    <CardContainer>
+    <CardContainer duration={duration} subscribed>
       <TextContainer>
         <h6>{name}</h6>
         <p>
           {startAt} - {endAt}
         </p>
       </TextContainer>
-      <ButtonContainer>
-        <button>
-          <RiLoginBoxLine />
-        </button>
-        <span>{availableCapacity} vagas</span>
-      </ButtonContainer>
+      <SubscribedButton availableCapacity={availableCapacity}  />
     </CardContainer>
   );
 }
 
 const CardContainer = styled.div`
-  height: 80px;
-  background-color: #f1f1f1;
+  height: ${({ duration }) =>
+    duration >= 2 ? duration * 80 + (duration - 1) * 10 : duration * 80}px;
+  width: 270px;
+  background-color:${({ subscribed }) => subscribed ?  "#D0FFDB" : "#f1f1f1"} ;
   border-radius: 5px;
   padding: 10px;
   display: flex;
@@ -53,27 +52,3 @@ const TextContainer = styled.div`
   }
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  width: 25%;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  color: #078632;
-
-  button {
-    font-size: 28px;
-    border: none;
-    color: #078632;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    width: auto;
-    cursor: pointer;
-  }
-
-  span {
-    font-size: 10px;
-    text-align: center;
-  }
-`;
