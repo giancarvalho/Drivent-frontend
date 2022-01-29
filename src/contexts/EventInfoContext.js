@@ -10,6 +10,7 @@ export default EventInfoContext;
 export function EventInfoProvider({ children }) {
   const [eventInfo, setEventInfo] = useState(null);
   const [error, setError] = useState(null);
+  const [ dateEvents, setDateEvents ] = useState([]);
   const api = useApi();
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export function EventInfoProvider({ children }) {
   }
 
   return (
-    <EventInfoContext.Provider value={{ eventInfo, eventInfoError: error }}>
+    <EventInfoContext.Provider value={{ eventInfo, eventInfoError: error, dateEvents, setDateEvents }}>
       { children }
     </EventInfoContext.Provider>
   );
