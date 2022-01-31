@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import useApi from "../../hooks/useApi";
 import { SessionTitle } from "../_shared/Texts";
 import DateButton from "./DateButton";
@@ -11,7 +12,7 @@ export default function DateFilter({ filtering, setFiltering }) {
     event.getEventList()
       .then(answer => {
         setDates(answer.data);
-      }).catch(answer => {});
+      }).catch(answer => toast("Não foi possivel buscar atividades"));
   }, []);
 
   return (

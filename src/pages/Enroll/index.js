@@ -36,14 +36,12 @@ export default function Enroll() {
         toast("Inscrito com sucesso! Por favor, faça login.");
         history.push("/sign-in");
       }).catch(error => {
-        if (error.response) {
-          for (const detail of error.response.data.details) {
-            toast(detail);
-          }
+        if (error.response?.status === 409) {
+          toast.error("Usuário já cadastrado.");
         } else {
-          toast("Não foi possível conectar ao servidor!");
+          toast.error("Não foi possível conectar ao servidor!");
         }
-      }).then(() => {
+
         setLoadingEnroll(false);
       });
     }
