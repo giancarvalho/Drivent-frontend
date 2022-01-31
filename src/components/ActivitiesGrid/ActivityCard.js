@@ -8,10 +8,9 @@ export default function ActivityCard({ activityData }) {
   const { name, startAt, endAt, availableCapacity } = activityData;
   const duration =
     dayjs(`2022-01-01 ${endAt}`).diff(`2022-01-01 ${startAt}`, "m") / 60;
-  const { working } = useContext(ActivityContext);
 
   return (
-    <CardContainer duration={duration} subscribed>
+    <CardContainer duration={duration} >
       <TextContainer>
         <h6>{name}</h6>
         <p>

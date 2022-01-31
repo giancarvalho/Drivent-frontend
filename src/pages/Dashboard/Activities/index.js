@@ -1,20 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import useApi from "../../../hooks/useApi";
 import {
   Title,
   PreviousSectionNotCompleted,
 } from "../../../components/_shared/Texts";
 import { toast } from "react-toastify";
-import ActivitiesGrid from "../../../components/ActivitiesGrid/index";
-import ActivityContext from "../../../contexts/ActivitiesContext";
+import DateFilter from "../../../components/Activities/DateFilter";
+import ActivitiesGrid from "../../../components/ActivitiesGrid";
+import EventInfoContext from "../../../contexts/EventInfoContext";
 
 export default function Activities() {
-  const { enrollment } = useApi();
-  const [ingressInfo, setIngressInfo] = useState({
-    isOnlinePlan: undefined,
-    payentConfirmed: undefined,
-  });
-
+  const { enrollment, } = useApi();
+  const [ ingressInfo, setIngressInfo ] = useState({ isOnlinePlan: undefined, payentConfirmed: undefined });
+  const [ filtering, setFiltering ] = useState(false);
+  const { dateEvents } = useContext(EventInfoContext);
+  console.log(dateEvents);
+  
   useEffect(() => {
     enrollment
       .getPersonalInformations()
@@ -31,15 +32,10 @@ export default function Activities() {
       .catch((answer) => toast(answer.response));
   }, []);
 
-  let cantShowActivity = <></>;
-
-  if (ingressInfo.payentConfirmed === false) {
-    cantShowActivity = (
-      <PreviousSectionNotCompleted>
-        <p>Você precisa ter confirmado pagamento antes</p>
-        <p>de fazer a escolha de atividades</p>
-      </PreviousSectionNotCompleted>
-    );
+  let cantShowActivity = false;
+  
+  if (ingressInfo.payentConfirmed === false || ingressInfo.payentConfirmed === undefined ) {
+    cantShowActivity = <PreviousSectionNotCompleted><p>Você precisa ter confirmado pagamento antes</p><p>de fazer a escolha de atividades</p></PreviousSectionNotCompleted>;
   } else if (ingressInfo.isOnlinePlan === true) {
     cantShowActivity = (
       <PreviousSectionNotCompleted>
@@ -49,11 +45,17 @@ export default function Activities() {
     );
   }
 
+  const activities = (
+    <>
+      <DateFilter filtering={filtering} setFiltering={setFiltering}/>
+      { filtering ? <ActivitiesGrid activitiesData={dateEvents}/> /* put <activityScreen/> here and use this inside: const { dateEvents } = useContext(EventInfoContext) */ : <></> } 
+    </>
+  );
+
   return (
-    <ActivityContext.Provider value={{ working: true }}>
+    <>
       <Title>Escolha de atividades</Title>
-      {/* {cantShowActivity} */}
-      <ActivitiesGrid />
-    </ActivityContext.Provider>
+      {cantShowActivity || activities}
+    </>
   );
 }
