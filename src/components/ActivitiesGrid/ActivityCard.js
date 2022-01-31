@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import ActivityContext from "../../contexts/ActivitiesContext";
@@ -8,16 +8,24 @@ export default function ActivityCard({ activityData }) {
   const { name, startAt, endAt, availableCapacity } = activityData;
   const duration =
     dayjs(`2022-01-01 ${endAt}`).diff(`2022-01-01 ${startAt}`, "m") / 60;
+  const { subscribedActivities } = useContext(ActivityContext);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  useEffect(() => {
+    const isActivityOnSubscribed = subscribedActivities.find(activity => activity.id === activityData.id);
+
+    if(isActivityOnSubscribed) setIsSubscribed(true);
+  }, [subscribedActivities]);
 
   return (
-    <CardContainer duration={duration} >
+    <CardContainer duration={duration} subscribed={isSubscribed}>
       <TextContainer>
         <h6>{name}</h6>
         <p>
           {startAt} - {endAt}
         </p>
       </TextContainer>
-      <SubscribedButton availableCapacity={availableCapacity}  />
+      <SubscribedButton availableCapacity={availableCapacity} subscribed={isSubscribed} />
     </CardContainer>
   );
 }

@@ -8,19 +8,21 @@ import { toast } from "react-toastify";
 import DateFilter from "../../../components/Activities/DateFilter";
 import ActivitiesGrid from "../../../components/ActivitiesGrid";
 import EventInfoContext from "../../../contexts/EventInfoContext";
+import ActivitiesContext from "../../../contexts/ActivitiesContext";
 
 export default function Activities() {
   const { enrollment, } = useApi();
   const [ ingressInfo, setIngressInfo ] = useState({ isOnlinePlan: undefined, payentConfirmed: undefined });
   const [ filtering, setFiltering ] = useState(false);
   const { dateEvents } = useContext(EventInfoContext);
+  const [subscribedActivities, setSubscribedActivities] = useState([]);
   console.log(dateEvents);
   
   useEffect(() => {
     enrollment
       .getPersonalInformations()
       .then((answer) => {
-        const { isOnlinePlan, payentConfirmed } = answer.data;
+        const { isOnlinePlan, payentConfirmed, activities } = answer.data;
 
         if (answer.data)
           setIngressInfo({
@@ -28,6 +30,7 @@ export default function Activities() {
             isOnlinePlan: isOnlinePlan ? true : false,
             payentConfirmed: payentConfirmed ? true : false,
           });
+        setSubscribedActivities(activities);
       })
       .catch((answer) => toast(answer.response));
   }, []);
@@ -53,9 +56,9 @@ export default function Activities() {
   );
 
   return (
-    <>
+    <ActivitiesContext.Provider value={{ subscribedActivities, setSubscribedActivities }}>
       <Title>Escolha de atividades</Title>
       {cantShowActivity || activities}
-    </>
+    </ActivitiesContext.Provider>
   );
 }
