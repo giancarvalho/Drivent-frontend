@@ -26,7 +26,7 @@ body {
 
 .ReactCreditCard.ReactCreditCard--visa .ReactCreditCard__front,
 .ReactCreditCard.ReactCreditCard--visa .ReactCreditCard__back {
-  background: #1f12ce;
+  background: #1a1199;
 }
 
 .ReactCreditCard.ReactCreditCard--amex .ReactCreditCard__front,

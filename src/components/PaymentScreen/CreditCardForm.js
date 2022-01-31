@@ -100,7 +100,7 @@ export default function CreditCardForm({
             <AuxContainer>
               <InputMask
                 name="expiration"
-                placeholder="MM/YY"
+                placeholder="MM/AA"
                 mask="99/99"
                 onChange={handleChange}
                 onFocus={handleFocus}
@@ -109,7 +109,7 @@ export default function CreditCardForm({
               />
               <InputMask
                 name="cvc"
-                placeholder="cvv"
+                placeholder="CVV"
                 mask="999"
                 onChange={handleChange}
                 onFocus={handleFocus}
