@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import useApi from "../../../hooks/useApi";
+import HotelScreen from "../../../components/HotelScreen";
 
-export default function Hotel() {
+export default function Hotel({ hotelToTrack, roomToTrack, isOnChange }) {
   const api = useApi();
   const [enrollInfo, setEnrollInfo] = useState(null);
 
   useEffect(() => {
     api.enrollment.getPersonalInformations().then(response => {
-      if(response.data.payentConfirmed) {
-        if(response.data.hasHotel) {
+      if (response.data.payentConfirmed) {
+        if (response.data.hasHotel) {
           setEnrollInfo("showHotels");
         } else {
           setEnrollInfo("noHotel");
@@ -38,7 +39,9 @@ export default function Hotel() {
       );
     } else {
       return (
-        <h1>componente do Leo</h1>
+        <Wrapper>
+          <HotelScreen hotelToTrack={hotelToTrack} roomToTrack={roomToTrack} isOnChange={isOnChange} />
+        </Wrapper>
       );
     }
   } else {
@@ -57,4 +60,12 @@ const BanMessage = styled.div`
   h1{
     text-align: center;
   }
+`;
+
+const Wrapper = styled.div`
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
