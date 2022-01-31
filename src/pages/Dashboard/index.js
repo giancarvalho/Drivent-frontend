@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import {
   Switch,
   Route,
@@ -17,14 +17,10 @@ import Payment from "./Payment";
 import Hotel from "./Hotel";
 import Activities from "./Activities";
 import Certificate from "./Certificate";
-import DoneScreen from "../../components/HotelScreen/DoneScreen";
 
 export default function Dashboard() {
   const { eventInfo } = useContext(EventInfoContext);
   const match = useRouteMatch();
-  const [selectedHotel, setSelectedHotel] = useState(null);
-  const [selectedRoom, setSelectedRoom] = useState(null);
-  const [changing, setChanging] = useState(false);
 
   return (
     <DashboardLayout background={eventInfo.backgroundImage}>
@@ -41,15 +37,7 @@ export default function Dashboard() {
           </Route>
 
           <Route path={`${match.path}/hotel`} exact>
-            <Hotel
-              hotelToTrack={[selectedHotel, setSelectedHotel]}
-              roomToTrack={[selectedRoom, setSelectedRoom]}
-              isOnChange={[changing, setChanging]}
-            />
-          </Route>
-
-          <Route path={`${match.path}/hotel/done`} exact>
-            <DoneScreen isOnChange={[changing, setChanging]} />
+            <Hotel />
           </Route>
 
           <Route path={`${match.path}/activities`} exact>
