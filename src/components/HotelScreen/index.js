@@ -23,120 +23,120 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
 
   useEffect(() => {
     const [changing, setChanging] = isOnChange;
-    if (!changing && (!selectedHotel || !selectedRoom)) {
-      return history.push("/dashboard/hotel/done");
-    }
-    api.enrollment.getPersonalInformations().then(res => {
-      setPersonalInfo(res.data);
-      if (res.data.roomId) setIsChoosingRoom(true);
-    });
-    api.hotel.getHotelsInfo().then(res => {
-      setHotels(res.data);
-    });
-    api.room.getRoomsInfo().then(res => {
-      setRooms(res.data);
-      setAvailability(checkAvailability(res.data));
-    });
-  }, []);
-
-  function checkAvailability(rooms) {
-    let hash = {};
-
-    rooms.forEach(room => {
-      if (hash[room.hotelId] === undefined) {
-        hash[room.hotelId] = room.availableCapacity;
-      } else {
-        hash[room.hotelId] = hash[room.hotelId] + room.availableCapacity;
-      }
-    });
-
-    return hash;
+    if (!changing && selectedHotel && selectedRoom)) {
+    return history.push("/dashboard/hotel/done");
   }
+  api.enrollment.getPersonalInformations().then(res => {
+    setPersonalInfo(res.data);
+    if (res.data.roomId) setIsChoosingRoom(true);
+  });
+  api.hotel.getHotelsInfo().then(res => {
+    setHotels(res.data);
+  });
+  api.room.getRoomsInfo().then(res => {
+    setRooms(res.data);
+    setAvailability(checkAvailability(res.data));
+  });
+}, []);
 
-  function handleReserve() {
-    if (selectedHotel && selectedRoom) {
-      const choosedRoom = rooms.filter(room => {
-        return room.hotelId === selectedHotel && room.number === selectedRoom;
-      })[0];
+function checkAvailability(rooms) {
+  let hash = {};
 
-      const body = {
-        cpf: personalInfo.cpf,
-        userId: personalInfo.userId,
-        hasHotel: personalInfo.hasHotel,
-        payentConfirmed: personalInfo.payentConfirmed,
-        roomId: choosedRoom.id
-      };
-
-      api.room.reserveRoom(body).then(res => {
-        toast("Quarto reservado com sucesso!");
-        const [changing, setChanging] = isOnChange;
-        setChanging(false);
-        history.push("/dashboard/hotel/done");
-      });
+  rooms.forEach(room => {
+    if (hash[room.hotelId] === undefined) {
+      hash[room.hotelId] = room.availableCapacity;
     } else {
-      toast("Selecione o hotel e o quarto para continuar.");
+      hash[room.hotelId] = hash[room.hotelId] + room.availableCapacity;
     }
-  }
+  });
 
-  function handleChangeRoom(_hotelId, _roomNumber) {
-    return () => {
-      setSelectedHotel(_hotelId);
-      setSelectedRoom(_roomNumber);
+  return hash;
+}
 
-      setIsChoosingRoom(true);
+function handleReserve() {
+  if (selectedHotel && selectedRoom) {
+    const choosedRoom = rooms.filter(room => {
+      return room.hotelId === selectedHotel && room.number === selectedRoom;
+    })[0];
+
+    const body = {
+      cpf: personalInfo.cpf,
+      userId: personalInfo.userId,
+      hasHotel: personalInfo.hasHotel,
+      payentConfirmed: personalInfo.payentConfirmed,
+      roomId: choosedRoom.id
     };
+
+    api.room.reserveRoom(body).then(res => {
+      toast("Quarto reservado com sucesso!");
+      const [changing, setChanging] = isOnChange;
+      setChanging(false);
+      history.push("/dashboard/hotel/done");
+    });
+  } else {
+    toast("Selecione o hotel e o quarto para continuar.");
   }
+}
 
-  return (
-    <Container>
-      <Title>Escolha de hotel e quarto</Title>
-      <SessionTitle>Primeiro, escolha seu hotel</SessionTitle>
-      <CardsWrapper>
-        {
-          hotels.map(hotelInfo => {
-            return (
-              <CardHotel
-                key={hotelInfo.id}
-                hotelInfo={hotelInfo}
-                availability={availability[hotelInfo.id] || 0}
-                selectedHotel={selectedHotel}
-                setSelectedHotel={setSelectedHotel}
-                setSelectedRoom={setSelectedRoom}
-              />
-            );
-          }
+function handleChangeRoom(_hotelId, _roomNumber) {
+  return () => {
+    setSelectedHotel(_hotelId);
+    setSelectedRoom(_roomNumber);
 
-          )
+    setIsChoosingRoom(true);
+  };
+}
+
+return (
+  <Container>
+    <Title>Escolha de hotel e quarto</Title>
+    <SessionTitle>Primeiro, escolha seu hotel</SessionTitle>
+    <CardsWrapper>
+      {
+        hotels.map(hotelInfo => {
+          return (
+            <CardHotel
+              key={hotelInfo.id}
+              hotelInfo={hotelInfo}
+              availability={availability[hotelInfo.id] || 0}
+              selectedHotel={selectedHotel}
+              setSelectedHotel={setSelectedHotel}
+              setSelectedRoom={setSelectedRoom}
+            />
+          );
         }
-      </CardsWrapper>
-      {
-        selectedHotel ? (
-          <>
-            <PaddingSubTitle>
-              <SessionTitle>Ótima pedida! Agora escolha seu quarto:</SessionTitle>
-            </PaddingSubTitle>
-            <WrapperRooms>
-              {
-                rooms.filter(room => room.hotelId === selectedHotel).map((room, key) => {
-                  return (
-                    <CardRoom
-                      key={key}
-                      roomInfo={room}
-                      selectedRoom={selectedRoom}
-                      setSelectedRoom={setSelectedRoom}
-                    />
-                  );
-                })
-              }
-            </WrapperRooms>
-          </>
-        ) : <></>
+
+        )
       }
-      {
-        selectedHotel && selectedRoom ? <ReserveButton onClick={handleReserve}>RESERVAR QUARTO</ReserveButton> : ""
-      }
-    </Container>
-  );
+    </CardsWrapper>
+    {
+      selectedHotel ? (
+        <>
+          <PaddingSubTitle>
+            <SessionTitle>Ótima pedida! Agora escolha seu quarto:</SessionTitle>
+          </PaddingSubTitle>
+          <WrapperRooms>
+            {
+              rooms.filter(room => room.hotelId === selectedHotel).map((room, key) => {
+                return (
+                  <CardRoom
+                    key={key}
+                    roomInfo={room}
+                    selectedRoom={selectedRoom}
+                    setSelectedRoom={setSelectedRoom}
+                  />
+                );
+              })
+            }
+          </WrapperRooms>
+        </>
+      ) : <></>
+    }
+    {
+      selectedHotel && selectedRoom ? <ReserveButton onClick={handleReserve}>RESERVAR QUARTO</ReserveButton> : ""
+    }
+  </Container>
+);
 }
 
 const Container = styled.div`
