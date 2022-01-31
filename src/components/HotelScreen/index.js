@@ -23,7 +23,7 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
 
   useEffect(() => {
     const [changing, setChanging] = isOnChange;
-    if (!changing && (!selectedHotel || !selectedRoom)) {
+    if (!changing && (selectedHotel && selectedRoom)) {
       return history.push("/dashboard/hotel/done");
     }
     api.enrollment.getPersonalInformations().then(res => {
