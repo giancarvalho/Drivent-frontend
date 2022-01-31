@@ -1,38 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca&family=Roboto&display=swap');
-
-
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca&family=Roboto&display=swap");
 
 * {
   box-sizing: border-box;
-  transition: all ease .2s;
+  transition: all ease 0.2s;
 }
 
 body {
   font-family: "Lexend Deca", sans-serif;
 }
 
-
-.react-credit-card--dankort .react-credit-card__front,
-.react-credit-card--dankort .react-credit-card__back{
-  background: #0055C7;
+.ReactCreditCard.ReactCreditCard--dankort .ReactCreditCard__front,
+.ReactCreditCard.ReactCreditCard--dankort .ReactCreditCard__back {
+  background: #0055c7;
 }
 
-.react-credit-card--discover .react-credit-card__front,
-.react-credit-card--discover .react-credit-card__back{
-  background: #86B8CF;
+.ReactCreditCard.ReactCreditCard--discover .ReactCreditCard__front,
+.ReactCreditCard.ReactCreditCard--discover .ReactCreditCard__back {
+  background: #86b8cf;
 }
 
-.react-credit-card--mastercard .react-credit-card__front,
-.react-credit-card--mastercard .react-credit-card__back{
-  background: #0061A8;
+.ReactCreditCard.ReactCreditCard--mastercard .ReactCreditCard__front,
+.ReactCreditCard.ReactCreditCard--mastercard .ReactCreditCard__back {
+  background: #f66009;
 }
 
-.react-credit-card--visa .react-credit-card__front,
-.react-credit-card--visa .react-credit-card__back{
-  background: #191278;
+.ReactCreditCard.ReactCreditCard--visa .ReactCreditCard__front,
+.ReactCreditCard.ReactCreditCard--visa .ReactCreditCard__back {
+  background: #1f12ce;
 }
 
-.react-credit-card--amex .react-credit-card__front,
-.react-credit-card--amex .react-credit-card__back{
+.ReactCreditCard.ReactCreditCard--amex .ReactCreditCard__front,
+.ReactCreditCard.ReactCreditCard--amex .ReactCreditCard__back {
   background-color: #108168;
 }
