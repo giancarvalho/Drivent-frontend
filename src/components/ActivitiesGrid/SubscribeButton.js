@@ -1,8 +1,27 @@
+import { useContext } from "react";
 import styled from "styled-components";
 import { RiLoginBoxLine } from "react-icons/ri";
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from "react-icons/ai";
+import useApi from "../../hooks/useApi";
+import UserContext from "../../contexts/UserContext";
 
-export default function SubscribeButton({ availableCapacity, subscribed }) {
+export default function SubscribeButton({ availableCapacity, subscribed, activityId }) {
+  const api = useApi();
+  const { userData } = useContext(UserContext);
+
+  function registerUserInTheActivity() {
+    const userId = userData.user.id;
+    const body = { userId, activityId };
+    //verificar se não tem conflito antes de mandar a requisição
+
+    api.enrollment.postUserInscription(body)
+      .then(response => {
+      }).catch(error => {
+      /* eslint-disable-next-line no-console */
+        console.error(error);
+      });
+  }
+
   if(subscribed) {
     return (
       <ButtonContainer>
@@ -15,7 +34,7 @@ export default function SubscribeButton({ availableCapacity, subscribed }) {
   }
 
   if (availableCapacity > 0) return (
-    <ButtonContainer>
+    <ButtonContainer onClick={() => registerUserInTheActivity()}>
       <button>
         <RiLoginBoxLine />
       </button>
