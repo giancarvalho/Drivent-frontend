@@ -5,7 +5,7 @@ import { AiOutlineCloseCircle, AiOutlineCheckCircle } from "react-icons/ai";
 import useApi from "../../hooks/useApi";
 import UserContext from "../../contexts/UserContext";
 
-export default function SubscribeButton({ availableCapacity, subscribed, activityId }) {
+export default function SubscribeButton({ availableCapacity, subscribed, setIsSubscribed, activityId }) {
   const api = useApi();
   const { userData } = useContext(UserContext);
 
@@ -16,6 +16,7 @@ export default function SubscribeButton({ availableCapacity, subscribed, activit
 
     api.enrollment.postUserInscription(body)
       .then(response => {
+        setIsSubscribed(true);
       }).catch(error => {
       /* eslint-disable-next-line no-console */
         console.error(error);

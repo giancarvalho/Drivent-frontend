@@ -25,7 +25,12 @@ export default function ActivityCard({ activityData }) {
           {startAt} - {endAt}
         </p>
       </TextContainer>
-      <SubscribedButton availableCapacity={availableCapacity} subscribed={isSubscribed} activityId={id}/>
+      <SubscribedButton
+        availableCapacity={availableCapacity}
+        subscribed={isSubscribed}
+        setIsSubscribed={setIsSubscribed}
+        activityId={id}
+      />
     </CardContainer>
   );
 }

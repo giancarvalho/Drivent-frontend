@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import { SessionTitle } from "../../components/_shared/Texts";
 import ActivityCard from "./ActivityCard";
-import dayjs from "dayjs";
 
 export default function ActivityBoard({ hallData }) {
   const { name: hallName, activities } = hallData;
-  
+
   function byStartTime(a, b) {
     return Number(a.startAt.split(":")[0]) - Number(b.startAt.split(":")[0]);
   }

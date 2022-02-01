@@ -16,8 +16,7 @@ export default function Activities() {
   const [ filtering, setFiltering ] = useState(false);
   const { dateEvents } = useContext(EventInfoContext);
   const [subscribedActivities, setSubscribedActivities] = useState([]);
-  console.log(dateEvents);
-  
+
   useEffect(() => {
     enrollment
       .getPersonalInformations()
@@ -36,7 +35,7 @@ export default function Activities() {
   }, []);
 
   let cantShowActivity = false;
-  
+
   if (ingressInfo.payentConfirmed === false || ingressInfo.payentConfirmed === undefined ) {
     cantShowActivity = <PreviousSectionNotCompleted><p>Você precisa ter confirmado pagamento antes</p><p>de fazer a escolha de atividades</p></PreviousSectionNotCompleted>;
   } else if (ingressInfo.isOnlinePlan === true) {
@@ -51,7 +50,7 @@ export default function Activities() {
   const activities = (
     <>
       <DateFilter filtering={filtering} setFiltering={setFiltering}/>
-      { filtering ? <ActivitiesGrid activitiesData={dateEvents}/> /* put <activityScreen/> here and use this inside: const { dateEvents } = useContext(EventInfoContext) */ : <></> } 
+      { filtering ? <ActivitiesGrid activitiesData={dateEvents}/> /* put <activityScreen/> here and use this inside: const { dateEvents } = useContext(EventInfoContext) */ : <></> }
     </>
   );
 
