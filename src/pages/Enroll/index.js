@@ -22,7 +22,7 @@ export default function Enroll() {
   const history = useHistory();
 
   const api = useApi();
-  
+
   const { eventInfo } = useContext(EventInfoContext);
 
   function submit(event) {
@@ -30,20 +30,28 @@ export default function Enroll() {
     setLoadingEnroll(true);
 
     if (password !== confirmPassword) {
-      toast("As senhas devem ser iguais!");
+      toast.error("As senhas devem ser iguais!", { containerId: "error" });
+      setLoadingEnroll(false);
     } else {
-      api.user.signUp(email, password).then(response => {
-        toast("Inscrito com sucesso! Por favor, faça login.");
-        history.push("/sign-in");
-      }).catch(error => {
-        if (error.response?.status === 409) {
-          toast.error("Usuário já cadastrado.");
-        } else {
-          toast.error("Não foi possível conectar ao servidor!");
-        }
+      api.user
+        .signUp(email, password)
+        .then((response) => {
+          toast("Inscrito com sucesso! Por favor, faça login.", {
+            containerId: "success",
+          });
+          history.push("/sign-in");
+        })
+        .catch((error) => {
+          if (error.response?.status === 409) {
+            toast.error("Usuário já cadastrado.", { containerId: "error" });
+          } else {
+            toast.error("Não foi possível conectar ao servidor!", {
+              containerId: "error",
+            });
+          }
 
-        setLoadingEnroll(false);
-      });
+          setLoadingEnroll(false);
+        });
     }
   }
 
@@ -56,10 +64,35 @@ export default function Enroll() {
       <Row>
         <Label>Inscrição</Label>
         <form onSubmit={submit}>
-          <Input label="E-mail" type="text" fullWidth value={email} onChange={e => setEmail(e.target.value)} />
-          <Input label="Senha" type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
-          <Input label="Repita sua senha" type="password" fullWidth value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
-          <Button type="submit" color="primary" fullWidth disabled={loadingEnroll}>Inscrever</Button>
+          <Input
+            label="E-mail"
+            type="text"
+            fullWidth
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            label="Senha"
+            type="password"
+            fullWidth
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Input
+            label="Repita sua senha"
+            type="password"
+            fullWidth
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <Button
+            type="submit"
+            color="primary"
+            fullWidth
+            disabled={loadingEnroll}
+          >
+            Inscrever
+          </Button>
         </form>
       </Row>
       <Row>

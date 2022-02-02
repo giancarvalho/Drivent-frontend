@@ -59,18 +59,16 @@ export default function PersonalInformationForm() {
       enrollment
         .save(newData)
         .then(() => {
-          toast("Salvo com sucesso!");
+          toast("Salvo com sucesso!", { containerId: "success" });
         })
         .catch((error) => {
           if (error.response?.data?.details) {
             for (const detail of error.response.data.details) {
-              toast(detail);
+              toast.error(detail, { containerId: "error" });
             }
           } else {
-            toast("Não foi possível");
+            toast.error("Não foi possível", { containerId: "error" });
           }
-          /* eslint-disable-next-line no-console */
-          console.log(error);
         });
     },
 
@@ -96,7 +94,6 @@ export default function PersonalInformationForm() {
       }
 
       const { name, cpf, birthday, phone, address } = response.data;
-      console.log(response.data);
       setData({
         name,
         cpf,

@@ -5,22 +5,38 @@ import { SessionTitle } from "../_shared/Texts";
 import DateButton from "./DateButton";
 
 export default function DateFilter({ filtering, setFiltering }) {
-  const { event, } = useApi();
-  const [ dates, setDates ] = useState([]);
+  const { event } = useApi();
+  const [dates, setDates] = useState([]);
 
   useEffect(() => {
-    event.getEventList()
-      .then(answer => {
+    event
+      .getEventList()
+      .then((answer) => {
         setDates(answer.data);
-      }).catch(answer => toast("Não foi possivel buscar atividades"));
+      })
+      .catch((answer) =>
+        toast.error("Não foi possivel buscar atividades", {
+          containerId: "error",
+        })
+      );
   }, []);
 
   return (
     <>
-      { filtering ? <></> : <SessionTitle>Primeiro, filtre pelo dia do evento:</SessionTitle> }
+      {filtering ? (
+        <></>
+      ) : (
+        <SessionTitle>Primeiro, filtre pelo dia do evento:</SessionTitle>
+      )}
 
       {dates.map((d, i) => (
-        <DateButton  key={i} date={d.date} activities={d.activity} filtering={filtering} setFiltering={setFiltering}/>
+        <DateButton
+          key={i}
+          date={d.date}
+          activities={d.activity}
+          filtering={filtering}
+          setFiltering={setFiltering}
+        />
       ))}
     </>
   );

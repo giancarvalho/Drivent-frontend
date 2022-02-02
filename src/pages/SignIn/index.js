@@ -27,18 +27,22 @@ export default function SignIn() {
     event.preventDefault();
     setLoadingSignIn(true);
 
-    api.auth.signIn(email, password).then(response => {
-      setUserData(response.data);
-    }).catch(error => {
-      if (error.response?.status === 401) {
-        toast.error("Senha incorreta"
-        );
-      } else {
-        toast("Não foi possível conectar ao servidor!");
-      }
+    api.auth
+      .signIn(email, password)
+      .then((response) => {
+        setUserData(response.data);
+      })
+      .catch((error) => {
+        if (error.response?.status === 401) {
+          toast.error("Senha incorreta", { containerId: "error" });
+        } else {
+          toast.error("Não foi possível conectar ao servidor!", {
+            containerId: "error",
+          });
+        }
 
-      setLoadingSignIn(false);
-    });
+        setLoadingSignIn(false);
+      });
   }
 
   return (
@@ -50,9 +54,28 @@ export default function SignIn() {
       <Row>
         <Label>Entrar</Label>
         <form onSubmit={submit}>
-          <Input label="E-mail" type="text" fullWidth value={email} onChange={e => setEmail(e.target.value)} />
-          <Input label="Senha" type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
-          <Button type="submit" color="primary" fullWidth disabled={loadingSignIn}>Entrar</Button>
+          <Input
+            label="E-mail"
+            type="text"
+            fullWidth
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            label="Senha"
+            type="password"
+            fullWidth
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Button
+            type="submit"
+            color="primary"
+            fullWidth
+            disabled={loadingSignIn}
+          >
+            Entrar
+          </Button>
         </form>
       </Row>
       <Row>
