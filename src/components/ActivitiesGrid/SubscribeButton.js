@@ -17,7 +17,7 @@ export default function SubscribeButton({
 }) {
   const api = useApi();
   const { userData } = useContext(UserContext);
-  const { subscribedActivities } = useContext(ActivitiesContext);
+  const { setSubscribedActivities, subscribedActivities } = useContext(ActivitiesContext);
 
   function checkTimeConflict() {
     const conflict = subscribedActivities.find(activity => (activity.dateId == dateId) && (activity.startAt == startAt));
@@ -31,7 +31,9 @@ export default function SubscribeButton({
 
     api.enrollment.postUserInscription(body)
       .then(response => {
+        const { activities } = response.data;
         setIsSubscribed(true);
+        setSubscribedActivities(activities);
       }).catch(error => {
       /* eslint-disable-next-line no-console */
         console.error(error);
