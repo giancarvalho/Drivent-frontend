@@ -19,10 +19,6 @@ export default function Activities() {
   const [filtering, setFiltering] = useState(false);
   const { dateEvents } = useContext(EventInfoContext);
   const [subscribedActivities, setSubscribedActivities] = useState([]);
-<<<<<<< HEAD
-=======
-  console.log(dateEvents);
->>>>>>> staging
 
   useEffect(() => {
     enrollment
