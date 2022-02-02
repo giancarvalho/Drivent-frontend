@@ -66,10 +66,6 @@ export default function Activities() {
 
   const activities = (
     <>
-<<<<<<< HEAD
-      <DateFilter filtering={filtering} setFiltering={setFiltering}/>
-      { filtering ? <ActivitiesGrid activitiesData={dateEvents}/> /* put <activityScreen/> here and use this inside: const { dateEvents } = useContext(EventInfoContext) */ : <></> }
-=======
       <DateFilter filtering={filtering} setFiltering={setFiltering} />
       {filtering ? (
         <ActivitiesGrid
@@ -78,7 +74,6 @@ export default function Activities() {
       ) : (
         <></>
       )}
->>>>>>> staging
     </>
   );
 
