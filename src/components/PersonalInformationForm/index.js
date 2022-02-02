@@ -96,7 +96,6 @@ export default function PersonalInformationForm() {
       }
 
       const { name, cpf, birthday, phone, address } = response.data;
-      console.log(response.data);
       setData({
         name,
         cpf,
