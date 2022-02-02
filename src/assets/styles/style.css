@@ -33,3 +33,7 @@ body {
 .ReactCreditCard.ReactCreditCard--amex .ReactCreditCard__back {
   background-color: #108168;
 }
+
+.Toastify__toast-container--top-center {
+  top: 8%;
+}
