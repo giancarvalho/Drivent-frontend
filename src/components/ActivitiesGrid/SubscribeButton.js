@@ -21,7 +21,7 @@ export default function SubscribeButton({
 
   function checkTimeConflict() {
     const conflict = subscribedActivities.find(activity => (activity.dateId == dateId) && (activity.startAt == startAt));
-    if(conflict) return toast.error("conflito de horário!");
+    if(conflict) return toast.error("conflito de horário!", { containerId: "error" });
     registerUserInTheActivity();
   }
 
