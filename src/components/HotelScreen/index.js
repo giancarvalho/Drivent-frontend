@@ -18,17 +18,21 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
   const [selectedRoom, setSelectedRoom] = roomToTrack;
 
   const [rooms, setRooms] = useState([]);
-  const [isChoosingRoom, setIsChoosingRoom] = useState(true);
+  //const [alreadyChoseRoom, setAlreadyChoseRoom] = useState(false);
   const [personalInfo, setPersonalInfo] = useState({});
 
   useEffect(() => {
     const [changing, setChanging] = isOnChange;
-    if (!changing && (selectedHotel && selectedRoom)) {
+    if (!changing && selectedHotel && selectedRoom) {
       return history.push("/dashboard/hotel/done");
     }
     api.enrollment.getPersonalInformations().then(res => {
       setPersonalInfo(res.data);
-      if (res.data.roomId) setIsChoosingRoom(true);
+      console.log("personalInfo", res.data);
+
+      if (!changing && !!res.data.roomId) {
+        history.push("/dashboard/hotel/done");
+      }
     });
     api.hotel.getHotelsInfo().then(res => {
       setHotels(res.data);
@@ -37,6 +41,8 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
       setRooms(res.data);
       setAvailability(checkAvailability(res.data));
     });
+
+    return () => setChanging(false);
   }, []);
 
   function checkAvailability(rooms) {
@@ -67,6 +73,13 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
         roomId: choosedRoom.id
       };
 
+      if (hotelToTrack[0] === selectedHotel && roomToTrack[0] === selectedRoom) {
+        toast("Quarto reservado com sucesso!");
+        const [changing, setChanging] = isOnChange;
+        setChanging(false);
+        history.push("/dashboard/hotel/done");
+      }
+
       api.room.reserveRoom(body).then(res => {
         toast("Quarto reservado com sucesso!");
         const [changing, setChanging] = isOnChange;
@@ -78,14 +91,14 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
     }
   }
 
-  function handleChangeRoom(_hotelId, _roomNumber) {
+  /*function handleChangeRoom(_hotelId, _roomNumber) {
     return () => {
       setSelectedHotel(_hotelId);
       setSelectedRoom(_roomNumber);
 
       setIsChoosingRoom(true);
     };
-  }
+  }*/
 
   return (
     <Container>
@@ -124,6 +137,8 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
                       roomInfo={room}
                       selectedRoom={selectedRoom}
                       setSelectedRoom={setSelectedRoom}
+                      userRoomId={personalInfo.roomId}
+                      changing={isOnChange[0]}
                     />
                   );
                 })

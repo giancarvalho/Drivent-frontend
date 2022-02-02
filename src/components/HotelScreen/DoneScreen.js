@@ -5,7 +5,7 @@ import useApi from "../../hooks/useApi.js";
 import HotelResume from "./HotelResume";
 import { useHistory } from "react-router-dom";
 
-export default function DoneScreen({ isOnChange }) {
+export default function DoneScreen({ isOnChange, hotelToTrack, roomToTrack }) {
   const api = useApi();
 
   const [hotels, setHotels] = useState([]);
@@ -51,7 +51,11 @@ export default function DoneScreen({ isOnChange }) {
             />
             <ReserveButton onClick={() => {
               const [changing, setChanging] = isOnChange;
+              const [selectedHotel, setSelectedHotel] = hotelToTrack;
+              const [selectedRoom, setSelectedRoom] = roomToTrack;
               setChanging(true);
+              setSelectedRoom(reservedRoom.number);
+              setSelectedHotel(reservedRoom.hotelId);
               history.push("/dashboard/hotel");
             }
             }

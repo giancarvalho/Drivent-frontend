@@ -1,49 +1,183 @@
 import styled from "styled-components";
 import { HiOutlineUser } from "react-icons/hi";
 
-export default function CardRoom({ roomInfo, selectedRoom, setSelectedRoom }) {
+export default function CardRoom({ roomInfo, selectedRoom, setSelectedRoom, userRoomId, changing }) {
   function contructUserIcons() {
-    if (selectedRoom === roomInfo.number) {
-      const occupiedSpaces = roomInfo.maximumCapacity - roomInfo.availableCapacity;
-      const occupiedStyle = { fill: "black" };
+    const occupiedStyle = { fill: "black" };
+    const selectedStyle = { fill: "#FF4791", color: "#FF4791" };
+
+    const freeIcons = n => {
+      if (n < 0) return <></>;
+      return <>{[...Array(n)].map((a, i) => <HiOutlineUser key={i} />)}</>;
+    };
+
+    const selectedIcon = () => <HiOutlineUser style={selectedStyle} />;
+
+    const occupiedIcons = n => {
+      if (n < 0) return <></>;
+      return <>{[...Array(n)].map((a, i) => <HiOutlineUser key={i} style={occupiedStyle} />)}</>;
+    };
+
+    const generateFromInfo = info => {
       return (
         <>
-          {
-            [...Array(roomInfo.availableCapacity - 1)].map((a, i) => <HiOutlineUser key={i} />)
-          }
-          {<HiOutlineUser style={{ fill: "#FF4791", color: "#FF4791" }} />}
-          {
-            [...Array(occupiedSpaces)].map((a, i) => <HiOutlineUser key={i} style={occupiedStyle} />)
-          }
+          {info.av ? freeIcons(info.av) : <></>}
+          {info.selected ? selectedIcon() : <></>}
+          {info.oc ? occupiedIcons(info.oc) : <></>}
         </>
       );
-    } else if (roomInfo.availableCapacity === 0) {
-      const occupiedStyle = { fill: "#8C8C8C" };
-      return (
-        <>
-          {
-            [...Array(roomInfo.maximumCapacity)].map((a, i) => <HiOutlineUser key={i} style={occupiedStyle} />)
-          }
-        </>
-      );
+    };
+
+    let info = {};
+    const av = roomInfo.availableCapacity;
+    const max = roomInfo.maximumCapacity;
+
+    if (changing) {
+      if (userRoomId && userRoomId === roomInfo.id) {
+        if (selectedRoom === roomInfo.number) {
+          info = {
+            av,
+            selected: true,
+            oc: max - av - 1
+          };
+          // av : livre
+          // 1 : selected
+          // max - av - 1 : ocupado
+        } else {
+          info = {
+            av: av + 1,
+            oc: max - av - 1
+          };
+          // av + 1: livre
+          // max - av - 1 : ocupado
+        }
+      } else {
+        if (selectedRoom === roomInfo.number) {
+          info = {
+            av: av - 1,
+            selected: true,
+            oc: max - av
+          };
+          // av - 1 : livre
+          // 1 : selected
+          // max - av : ocupado
+        } else {
+          //if (av === 0) {
+          //}
+          info = {
+            av: av,
+            oc: max - av
+          };
+          // if (av === 0) {
+          //   max : ocupado
+          //   disabled
+          // }
+          // av : livre
+          // max - av : ocupado
+        }
+      }
     } else {
-      const occupiedSpaces = roomInfo.maximumCapacity - roomInfo.availableCapacity;
-      const occupiedStyle = { fill: "black" };
-      return (
-        <>
-          {
-            [...Array(roomInfo.availableCapacity)].map((a, i) => <HiOutlineUser key={i} />)
-          }
-          {
-            [...Array(occupiedSpaces)].map((a, i) => <HiOutlineUser key={i} style={occupiedStyle} />)
-          }
-        </>
-      );
+      if (selectedRoom === roomInfo.number) {
+        info = {
+          av: av - 1,
+          selected: true,
+          oc: max - av
+        };
+        // av - 1 : livre
+        // 1 : selected
+        // max - av : ocupado
+      } else {
+        //if (av === 0) {
+        //}
+        info = {
+          av: av,
+          oc: max - av
+        };
+        // if (av === 0) {
+        //   max : ocupado
+        //   disabled
+        // }
+        // av : livre
+        // max - av : ocupado
+      }
     }
+
+    return generateFromInfo(info);
+
+    return <></>;
+    /*
+    if (userRoomId && userRoomId === roomInfo.id) {
+      const occupiedSpaces = roomInfo.maximumCapacity - roomInfo.availableCapacity;
+      const occupiedSpacesByotherUsers = Math.max(occupiedSpaces - 1, 0);
+      if (selectedRoom === roomInfo.number) {
+        return (
+          <>
+            {
+              [...Array(roomInfo.availableCapacity)].map((a, i) => <HiOutlineUser key={i} />)
+            }
+            {<HiOutlineUser style={selectedStyle} />}
+            {
+              [...Array(occupiedSpacesByotherUsers)].map((a, i) => <HiOutlineUser key={i} style={occupiedStyle} />)
+            }
+          </>
+        );
+      } else {
+        return (
+          <>
+            {
+              [...Array(roomInfo.maximumCapacity - occupiedSpacesByotherUsers)].map((a, i) => <HiOutlineUser key={i} />)
+            }
+            {
+              [...Array(occupiedSpacesByotherUsers)].map((a, i) => <HiOutlineUser key={i} style={occupiedStyle} />)
+            }
+          </>
+        );
+      }
+    } else {
+      if (selectedRoom === roomInfo.number) {
+        const occupiedSpaces = roomInfo.maximumCapacity - roomInfo.availableCapacity;
+        const unoccupiedSpaces = Math.max(roomInfo.availableCapacity - 1, 0);
+  
+        return (
+          <>
+            {
+              [...Array(unoccupiedSpaces)].map((a, i) => <HiOutlineUser key={i} />)
+            }
+            {<HiOutlineUser style={selectedStyle} />}
+            {
+              [...Array(Math.max(occupiedSpaces - 1, 0))].map((a, i) => <HiOutlineUser key={i} style={occupiedStyle} />)
+            }
+          </>
+        );
+      } else if (roomInfo.availableCapacity === 0) {
+        const occupiedStyle = { fill: "#8C8C8C" };
+        return (
+          <>
+            {
+              [...Array(roomInfo.maximumCapacity)].map((a, i) => <HiOutlineUser key={i} style={occupiedStyle} />)
+            }
+          </>
+        );
+      } else {
+        const occupiedSpaces = roomInfo.maximumCapacity - roomInfo.availableCapacity;
+        const occupiedStyle = { fill: "black" };
+        return (
+          <>
+            {
+              [...Array(roomInfo.availableCapacity)].map((a, i) => <HiOutlineUser key={i} />)
+            }
+            {
+              [...Array(occupiedSpaces)].map((a, i) => <HiOutlineUser key={i} style={occupiedStyle} />)
+            }
+          </>
+        );
+      }
+      
+    }*/
   }
 
   function handleClick() {
-    if (roomInfo.availableCapacity === 0) return;
+    if (roomInfo.availableCapacity === 0 && !(changing && userRoomId === roomInfo.id)) return;
     if (selectedRoom === roomInfo.number) {
       setSelectedRoom(null);
     } else {
@@ -55,7 +189,7 @@ export default function CardRoom({ roomInfo, selectedRoom, setSelectedRoom }) {
     <ContainerRoom
       isSelected={selectedRoom === roomInfo.number}
       onClick={handleClick}
-      full={roomInfo.availableCapacity === 0}>
+      full={roomInfo.availableCapacity === 0 && !(changing && userRoomId === roomInfo.id)}>
       {
         roomInfo ? (
           <>

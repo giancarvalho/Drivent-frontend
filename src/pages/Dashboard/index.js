@@ -49,7 +49,11 @@ export default function Dashboard() {
           </Route>
 
           <Route path={`${match.path}/hotel/done`} exact>
-            <DoneScreen isOnChange={[changing, setChanging]} />
+            <DoneScreen
+              hotelToTrack={[selectedHotel, setSelectedHotel]}
+              roomToTrack={[selectedRoom, setSelectedRoom]}
+              isOnChange={[changing, setChanging]}
+            />
           </Route>
 
           <Route path={`${match.path}/activities`} exact>
