@@ -74,20 +74,20 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
       };
 
       if (hotelToTrack[0] === selectedHotel && roomToTrack[0] === selectedRoom) {
-        toast("Quarto reservado com sucesso!");
+        toast("Quarto reservado com sucesso!", { containerId: "success" });
         const [changing, setChanging] = isOnChange;
         setChanging(false);
         history.push("/dashboard/hotel/done");
       }
 
       api.room.reserveRoom(body).then(res => {
-        toast("Quarto reservado com sucesso!");
+        toast("Quarto reservado com sucesso!", { containerId: "success" });
         const [changing, setChanging] = isOnChange;
         setChanging(false);
         history.push("/dashboard/hotel/done");
       });
     } else {
-      toast("Selecione o hotel e o quarto para continuar.");
+      toast("Selecione o hotel e o quarto para continuar.", { containerId: "success" });
     }
   }
 
