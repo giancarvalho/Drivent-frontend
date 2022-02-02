@@ -24,7 +24,7 @@ export default function validateCardForm(values) {
 
   for (const value of Object.values(validation)) {
     if (!value.isValid) {
-      toast.error(value.message);
+      toast.error(value.message, { containerId: "error" });
       isDataValid = false;
     }
   }

@@ -53,12 +53,14 @@ export default function CreditCardForm({
         payentConfirmed: true,
       })
       .then(() => {
-        toast("Seu ingresso foi confirmado!");
+        toast("Seu ingresso foi confirmado!", { containerId: "success" });
         setisPurchaseConfirmed(true);
       })
       .catch(() => {
         setIsFormDisabled(false);
-        toast.error("Não foi possível concluir a sua compra");
+        toast.error("Não foi possível concluir a sua compra", {
+          containerId: "error",
+        });
       });
   }
 
