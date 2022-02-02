@@ -11,13 +11,16 @@ import EventInfoContext from "../../../contexts/EventInfoContext";
 import ActivitiesContext from "../../../contexts/ActivitiesContext";
 
 export default function Activities() {
-  const { enrollment, } = useApi();
-  const [ ingressInfo, setIngressInfo ] = useState({ isOnlinePlan: undefined, payentConfirmed: undefined });
-  const [ filtering, setFiltering ] = useState(false);
+  const { enrollment } = useApi();
+  const [ingressInfo, setIngressInfo] = useState({
+    isOnlinePlan: undefined,
+    payentConfirmed: undefined,
+  });
+  const [filtering, setFiltering] = useState(false);
   const { dateEvents } = useContext(EventInfoContext);
   const [subscribedActivities, setSubscribedActivities] = useState([]);
   console.log(dateEvents);
-  
+
   useEffect(() => {
     enrollment
       .getPersonalInformations()
@@ -32,13 +35,23 @@ export default function Activities() {
           });
         setSubscribedActivities(activities);
       })
-      .catch((answer) => toast(answer.response));
+      .catch((answer) =>
+        toast.error(answer.response, { containerId: "error" })
+      );
   }, []);
 
   let cantShowActivity = false;
-  
-  if (ingressInfo.payentConfirmed === false || ingressInfo.payentConfirmed === undefined ) {
-    cantShowActivity = <PreviousSectionNotCompleted><p>Você precisa ter confirmado pagamento antes</p><p>de fazer a escolha de atividades</p></PreviousSectionNotCompleted>;
+
+  if (
+    ingressInfo.payentConfirmed === false ||
+    ingressInfo.payentConfirmed === undefined
+  ) {
+    cantShowActivity = (
+      <PreviousSectionNotCompleted>
+        <p>Você precisa ter confirmado pagamento antes</p>
+        <p>de fazer a escolha de atividades</p>
+      </PreviousSectionNotCompleted>
+    );
   } else if (ingressInfo.isOnlinePlan === true) {
     cantShowActivity = (
       <PreviousSectionNotCompleted>
@@ -50,13 +63,21 @@ export default function Activities() {
 
   const activities = (
     <>
-      <DateFilter filtering={filtering} setFiltering={setFiltering}/>
-      { filtering ? <ActivitiesGrid activitiesData={dateEvents}/> /* put <activityScreen/> here and use this inside: const { dateEvents } = useContext(EventInfoContext) */ : <></> } 
+      <DateFilter filtering={filtering} setFiltering={setFiltering} />
+      {filtering ? (
+        <ActivitiesGrid
+          activitiesData={dateEvents}
+        /> /* put <activityScreen/> here and use this inside: const { dateEvents } = useContext(EventInfoContext) */
+      ) : (
+        <></>
+      )}
     </>
   );
 
   return (
-    <ActivitiesContext.Provider value={{ subscribedActivities, setSubscribedActivities }}>
+    <ActivitiesContext.Provider
+      value={{ subscribedActivities, setSubscribedActivities }}
+    >
       <Title>Escolha de atividades</Title>
       {cantShowActivity || activities}
     </ActivitiesContext.Provider>
