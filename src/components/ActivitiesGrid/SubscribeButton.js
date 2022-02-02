@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import { RiLoginBoxLine } from "react-icons/ri";
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from "react-icons/ai";
@@ -20,7 +21,7 @@ export default function SubscribeButton({
 
   function checkTimeConflict() {
     const conflict = subscribedActivities.find(activity => (activity.dateId == dateId) && (activity.startAt == startAt));
-    if(conflict) return console.log("vou mostrar o erro");
+    if(conflict) return toast.error("conflito de horário!");
     registerUserInTheActivity();
   }
 
