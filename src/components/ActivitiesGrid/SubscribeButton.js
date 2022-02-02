@@ -4,15 +4,29 @@ import { RiLoginBoxLine } from "react-icons/ri";
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from "react-icons/ai";
 import useApi from "../../hooks/useApi";
 import UserContext from "../../contexts/UserContext";
+import ActivitiesContext from "../../contexts/ActivitiesContext";
 
-export default function SubscribeButton({ availableCapacity, subscribed, setIsSubscribed, activityId }) {
+export default function SubscribeButton({
+  availableCapacity,
+  subscribed,
+  setIsSubscribed,
+  activityId,
+  startAt,
+  dateId
+}) {
   const api = useApi();
   const { userData } = useContext(UserContext);
+  const { subscribedActivities } = useContext(ActivitiesContext);
+
+  function checkTimeConflict() {
+    const conflict = subscribedActivities.find(activity => (activity.dateId == dateId) && (activity.startAt == startAt));
+    if(conflict) return console.log("vou mostrar o erro");
+    registerUserInTheActivity();
+  }
 
   function registerUserInTheActivity() {
     const userId = userData.user.id;
     const body = { userId, activityId };
-    //verificar se não tem conflito antes de mandar a requisição
 
     api.enrollment.postUserInscription(body)
       .then(response => {
@@ -35,7 +49,7 @@ export default function SubscribeButton({ availableCapacity, subscribed, setIsSu
   }
 
   if (availableCapacity > 0) return (
-    <ButtonContainer onClick={() => registerUserInTheActivity()}>
+    <ButtonContainer onClick={() => checkTimeConflict()}>
       <button>
         <RiLoginBoxLine />
       </button>
