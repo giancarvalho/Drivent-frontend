@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import DateFnsUtils from "@date-io/date-fns";
 import { Title } from "../../components/_shared/Texts";
@@ -26,6 +27,7 @@ dayjs.extend(CustomParseFormat);
 export default function PersonalInformationForm() {
   const [dynamicInputIsLoading, setDynamicInputIsLoading] = useState(false);
   const { enrollment, cep } = useApi();
+  const history = useHistory();
 
   const {
     handleSubmit,
@@ -60,6 +62,7 @@ export default function PersonalInformationForm() {
         .save(newData)
         .then(() => {
           toast("Salvo com sucesso!", { containerId: "success" });
+          history.push("/dashboard/payment");
         })
         .catch((error) => {
           if (error.response?.data?.details) {

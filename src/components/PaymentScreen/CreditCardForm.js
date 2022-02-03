@@ -1,5 +1,6 @@
 import Card from "@comeon/react-credit-card";
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import validateCardForm from "./ValidateCardForm";
 import "@comeon/react-credit-card/dist/react-credit-card.css";
@@ -12,6 +13,7 @@ export default function CreditCardForm({
   setisPurchaseConfirmed,
   ingressInfo,
 }) {
+  const history = useHistory();
   const [isFormDisabled, setIsFormDisabled] = useState(false);
   const [values, setValues] = React.useState({
     name: "",
@@ -55,6 +57,9 @@ export default function CreditCardForm({
       .then(() => {
         toast("Seu ingresso foi confirmado!", { containerId: "success" });
         setisPurchaseConfirmed(true);
+        setTimeout(() => {
+          history.push("/dashboard/hotel");
+        }, 1700);
       })
       .catch(() => {
         setIsFormDisabled(false);
