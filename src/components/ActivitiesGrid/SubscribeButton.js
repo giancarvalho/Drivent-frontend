@@ -13,15 +13,27 @@ export default function SubscribeButton({
   setIsSubscribed,
   activityId,
   startAt,
-  dateId
+  dateId,
+  endAt,
 }) {
   const api = useApi();
   const { userData } = useContext(UserContext);
-  const { setSubscribedActivities, subscribedActivities } = useContext(ActivitiesContext);
+  const { setSubscribedActivities, subscribedActivities } =
+    useContext(ActivitiesContext);
 
   function checkTimeConflict() {
-    const conflict = subscribedActivities.find(activity => (activity.dateId == dateId) && (activity.startAt == startAt));
-    if(conflict) return toast.error("conflito de horário!", { containerId: "error" });
+    const conflict = subscribedActivities.find((activity) => {
+      if (activity.dateId === dateId) {
+        if (activity.startAt === startAt) return true;
+        if (activity.endAt === endAt) return true;
+        if (activity.startAt >= startAt && activity.endAt <= endAt) return true;
+        if (activity.startAt >= startAt && activity.startAt < endAt)
+          return true;
+      }
+      return false;
+    });
+    if (conflict)
+      return toast.error("conflito de horário!", { containerId: "error" });
     registerUserInTheActivity();
   }
 
@@ -29,18 +41,20 @@ export default function SubscribeButton({
     const userId = userData.user.id;
     const body = { userId, activityId };
 
-    api.enrollment.postUserInscription(body)
-      .then(response => {
+    api.enrollment
+      .postUserInscription(body)
+      .then((response) => {
         const { activities } = response.data;
         setIsSubscribed(true);
         setSubscribedActivities(activities);
-      }).catch(error => {
-      /* eslint-disable-next-line no-console */
+      })
+      .catch((error) => {
+        /* eslint-disable-next-line no-console */
         console.error(error);
       });
   }
 
-  if(subscribed) {
+  if (subscribed) {
     return (
       <ButtonContainer>
         <button>
@@ -51,15 +65,15 @@ export default function SubscribeButton({
     );
   }
 
-  if (availableCapacity > 0) return (
-    <ButtonContainer onClick={() => checkTimeConflict()}>
-      <button>
-        <RiLoginBoxLine />
-      </button>
-      <span>{availableCapacity} vagas</span>
-    </ButtonContainer>
-
-  );
+  if (availableCapacity > 0)
+    return (
+      <ButtonContainer onClick={() => checkTimeConflict()}>
+        <button>
+          <RiLoginBoxLine />
+        </button>
+        <span>{availableCapacity} vagas</span>
+      </ButtonContainer>
+    );
 
   return (
     <ButtonContainer className="sold-out">
@@ -96,11 +110,11 @@ const ButtonContainer = styled.div`
     text-align: center;
   }
 
-  &&.sold-out{
-    color: #CC6666;
+  &&.sold-out {
+    color: #cc6666;
 
     button {
-      color: #CC6666;
+      color: #cc6666;
     }
   }
 `;

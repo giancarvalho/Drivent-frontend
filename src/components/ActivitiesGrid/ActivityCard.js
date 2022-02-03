@@ -12,9 +12,11 @@ export default function ActivityCard({ activityData }) {
   const [isSubscribed, setIsSubscribed] = useState(false);
 
   useEffect(() => {
-    const isActivityOnSubscribed = subscribedActivities.find(activity => activity.id === activityData.id);
+    const isActivityOnSubscribed = subscribedActivities.find(
+      (activity) => activity.id === activityData.id
+    );
 
-    if(isActivityOnSubscribed) setIsSubscribed(true);
+    if (isActivityOnSubscribed) setIsSubscribed(true);
   }, [subscribedActivities]);
 
   return (
@@ -32,6 +34,7 @@ export default function ActivityCard({ activityData }) {
         activityId={id}
         startAt={startAt}
         dateId={dateId}
+        endAt={endAt}
       />
     </CardContainer>
   );
@@ -41,7 +44,7 @@ const CardContainer = styled.div`
   height: ${({ duration }) =>
     duration >= 2 ? duration * 80 + (duration - 1) * 10 : duration * 80}px;
   width: 270px;
-  background-color:${({ subscribed }) => subscribed ?  "#D0FFDB" : "#f1f1f1"} ;
+  background-color: ${({ subscribed }) => (subscribed ? "#D0FFDB" : "#f1f1f1")};
   border-radius: 5px;
   padding: 10px;
   display: flex;
@@ -65,4 +68,3 @@ const TextContainer = styled.div`
     margin-top: 7px;
   }
 `;
-
