@@ -13,26 +13,23 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
   const history = useHistory();
   const [hotels, setHotels] = useState([]);
   const [availability, setAvailability] = useState({});
-
   const [selectedHotel, setSelectedHotel] = hotelToTrack;
   const [selectedRoom, setSelectedRoom] = roomToTrack;
 
   const [rooms, setRooms] = useState([]);
-  //const [alreadyChoseRoom, setAlreadyChoseRoom] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [personalInfo, setPersonalInfo] = useState({});
 
   useEffect(() => {
     const [changing, setChanging] = isOnChange;
-    if (!changing && selectedHotel && selectedRoom) {
-      return history.push("/dashboard/hotel/done");
-    }
+
     api.enrollment.getPersonalInformations().then(res => {
       setPersonalInfo(res.data);
-      console.log("personalInfo", res.data);
 
       if (!changing && !!res.data.roomId) {
-        history.push("/dashboard/hotel/done");
+        return history.push("/dashboard/hotel/done");
       }
+      setLoading(false);
     });
     api.hotel.getHotelsInfo().then(res => {
       setHotels(res.data);
@@ -73,11 +70,23 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
         roomId: choosedRoom.id
       };
 
-      if (hotelToTrack[0] === selectedHotel && roomToTrack[0] === selectedRoom) {
+      let alreadyReservedRoom = "";
+      let alreadyReservedHotel = -1;
+      rooms.forEach(room => {
+        const userId = personalInfo.userId;
+        if (room.firstGuest === userId || room.secondGuest === userId) {
+          if (room.thirdGuest === userId) {
+            alreadyReservedRoom = room.number;
+            alreadyReservedHotel = room.hotelId;
+          }
+        }
+      });
+
+      if (alreadyReservedHotel === selectedHotel && alreadyReservedRoom === selectedRoom) {
         toast("Quarto reservado com sucesso!", { containerId: "success" });
         const [changing, setChanging] = isOnChange;
         setChanging(false);
-        history.push("/dashboard/hotel/done");
+        return history.push("/dashboard/hotel/done");
       }
 
       api.room.reserveRoom(body).then(res => {
@@ -91,16 +100,7 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
     }
   }
 
-  /*function handleChangeRoom(_hotelId, _roomNumber) {
-    return () => {
-      setSelectedHotel(_hotelId);
-      setSelectedRoom(_roomNumber);
-
-      setIsChoosingRoom(true);
-    };
-  }*/
-
-  return (
+  return (loading ? <Container></Container> : (
     <Container>
       <Title>Escolha de hotel e quarto</Title>
       <SessionTitle>Primeiro, escolha seu hotel</SessionTitle>
@@ -151,6 +151,7 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
         selectedHotel && selectedRoom ? <ReserveButton onClick={handleReserve}>RESERVAR QUARTO</ReserveButton> : ""
       }
     </Container>
+  )
   );
 }
 

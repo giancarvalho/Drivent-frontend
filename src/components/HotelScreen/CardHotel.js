@@ -57,6 +57,7 @@ const ContainerCardHotel = styled.div`
   padding-top: 16px;
   padding-left: 14px;
   padding-right: 14px;
+  cursor: pointer;
 `;
 
 const Image = styled.img`
