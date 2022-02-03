@@ -5,7 +5,7 @@ import ActivityContext from "../../contexts/ActivitiesContext";
 import SubscribedButton from "./SubscribeButton";
 
 export default function ActivityCard({ activityData }) {
-  const { name, startAt, endAt, availableCapacity } = activityData;
+  const { name, startAt, endAt, availableCapacity, id, dateId } = activityData;
   const duration =
     dayjs(`2022-01-01 ${endAt}`).diff(`2022-01-01 ${startAt}`, "m") / 60;
   const { subscribedActivities } = useContext(ActivityContext);
@@ -25,7 +25,14 @@ export default function ActivityCard({ activityData }) {
           {startAt} - {endAt}
         </p>
       </TextContainer>
-      <SubscribedButton availableCapacity={availableCapacity} subscribed={isSubscribed} />
+      <SubscribedButton
+        availableCapacity={availableCapacity}
+        subscribed={isSubscribed}
+        setIsSubscribed={setIsSubscribed}
+        activityId={id}
+        startAt={startAt}
+        dateId={dateId}
+      />
     </CardContainer>
   );
 }

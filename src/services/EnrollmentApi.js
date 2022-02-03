@@ -25,4 +25,12 @@ export default class EnrollmentApi extends AuthenticatedApi {
       },
     });
   }
+
+  postUserInscription(body) {
+    return api.post("/inscription/", body, {
+      headers: {
+        ...this.getAuthorizationHeader(),
+      },
+    });
+  }
 }
