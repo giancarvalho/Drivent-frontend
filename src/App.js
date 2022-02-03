@@ -34,7 +34,7 @@ export default function App() {
           enableMultiContainer
           containerId={"success"}
           position="top-center"
-          autoClose={4000}
+          autoClose={2700}
           newestOnTop={false}
           closeOnClick
           rtl={false}

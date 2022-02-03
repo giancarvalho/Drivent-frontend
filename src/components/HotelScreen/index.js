@@ -23,7 +23,7 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
   useEffect(() => {
     const [changing, setChanging] = isOnChange;
 
-    api.enrollment.getPersonalInformations().then(res => {
+    api.enrollment.getPersonalInformations().then((res) => {
       setPersonalInfo(res.data);
 
       if (!changing && !!res.data.roomId) {
@@ -31,10 +31,10 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
       }
       setLoading(false);
     });
-    api.hotel.getHotelsInfo().then(res => {
+    api.hotel.getHotelsInfo().then((res) => {
       setHotels(res.data);
     });
-    api.room.getRoomsInfo().then(res => {
+    api.room.getRoomsInfo().then((res) => {
       setRooms(res.data);
       setAvailability(checkAvailability(res.data));
     });
@@ -45,7 +45,7 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
   function checkAvailability(rooms) {
     let hash = {};
 
-    rooms.forEach(room => {
+    rooms.forEach((room) => {
       if (hash[room.hotelId] === undefined) {
         hash[room.hotelId] = room.availableCapacity;
       } else {
@@ -58,7 +58,7 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
 
   function handleReserve() {
     if (selectedHotel && selectedRoom) {
-      const choosedRoom = rooms.filter(room => {
+      const choosedRoom = rooms.filter((room) => {
         return room.hotelId === selectedHotel && room.number === selectedRoom;
       })[0];
 
@@ -67,12 +67,12 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
         userId: personalInfo.userId,
         hasHotel: personalInfo.hasHotel,
         payentConfirmed: personalInfo.payentConfirmed,
-        roomId: choosedRoom.id
+        roomId: choosedRoom.id,
       };
 
       let alreadyReservedRoom = "";
       let alreadyReservedHotel = -1;
-      rooms.forEach(room => {
+      rooms.forEach((room) => {
         const userId = personalInfo.userId;
         if (room.firstGuest === userId || room.secondGuest === userId) {
           if (room.thirdGuest === userId) {
@@ -82,81 +82,90 @@ export default function HotelScreen({ hotelToTrack, roomToTrack, isOnChange }) {
         }
       });
 
-      if (alreadyReservedHotel === selectedHotel && alreadyReservedRoom === selectedRoom) {
-        toast("Quarto reservado com sucesso!", { containerId: "success" });
-        const [changing, setChanging] = isOnChange;
-        setChanging(false);
-        return history.push("/dashboard/hotel/done");
-      }
-
-      api.room.reserveRoom(body).then(res => {
+      if (
+        alreadyReservedHotel === selectedHotel &&
+        alreadyReservedRoom === selectedRoom
+      ) {
         toast("Quarto reservado com sucesso!", { containerId: "success" });
         const [changing, setChanging] = isOnChange;
         setChanging(false);
         history.push("/dashboard/hotel/done");
+        return setTimeout(() => {
+          history.push("/dashboard/activities");
+        }, 2000);
+      }
+
+      api.room.reserveRoom(body).then((res) => {
+        toast("Quarto reservado com sucesso!", { containerId: "success" });
+        const [changing, setChanging] = isOnChange;
+        setChanging(false);
+        history.push("/dashboard/hotel/done");
+        setTimeout(() => {
+          history.push("/dashboard/activities");
+        }, 2000);
       });
     } else {
-      toast("Selecione o hotel e o quarto para continuar.", { containerId: "success" });
+      toast("Selecione o hotel e o quarto para continuar.", {
+        containerId: "success",
+      });
     }
   }
 
-  return (loading ? <Container></Container> : (
+  return loading ? (
+    <Container></Container>
+  ) : (
     <Container>
       <Title>Escolha de hotel e quarto</Title>
       <SessionTitle>Primeiro, escolha seu hotel</SessionTitle>
       <CardsWrapper>
-        {
-          hotels.map(hotelInfo => {
-            return (
-              <CardHotel
-                key={hotelInfo.id}
-                hotelInfo={hotelInfo}
-                availability={availability[hotelInfo.id] || 0}
-                selectedHotel={selectedHotel}
-                setSelectedHotel={setSelectedHotel}
-                setSelectedRoom={setSelectedRoom}
-              />
-            );
-          }
-
-          )
-        }
+        {hotels.map((hotelInfo) => {
+          return (
+            <CardHotel
+              key={hotelInfo.id}
+              hotelInfo={hotelInfo}
+              availability={availability[hotelInfo.id] || 0}
+              selectedHotel={selectedHotel}
+              setSelectedHotel={setSelectedHotel}
+              setSelectedRoom={setSelectedRoom}
+            />
+          );
+        })}
       </CardsWrapper>
-      {
-        selectedHotel ? (
-          <>
-            <PaddingSubTitle>
-              <SessionTitle>Ótima pedida! Agora escolha seu quarto:</SessionTitle>
-            </PaddingSubTitle>
-            <WrapperRooms>
-              {
-                rooms.filter(room => room.hotelId === selectedHotel).map((room, key) => {
-                  return (
-                    <CardRoom
-                      key={key}
-                      roomInfo={room}
-                      selectedRoom={selectedRoom}
-                      setSelectedRoom={setSelectedRoom}
-                      userRoomId={personalInfo.roomId}
-                      changing={isOnChange[0]}
-                    />
-                  );
-                })
-              }
-            </WrapperRooms>
-          </>
-        ) : <></>
-      }
-      {
-        selectedHotel && selectedRoom ? <ReserveButton onClick={handleReserve}>RESERVAR QUARTO</ReserveButton> : ""
-      }
+      {selectedHotel ? (
+        <>
+          <PaddingSubTitle>
+            <SessionTitle>Ótima pedida! Agora escolha seu quarto:</SessionTitle>
+          </PaddingSubTitle>
+          <WrapperRooms>
+            {rooms
+              .filter((room) => room.hotelId === selectedHotel)
+              .map((room, key) => {
+                return (
+                  <CardRoom
+                    key={key}
+                    roomInfo={room}
+                    selectedRoom={selectedRoom}
+                    setSelectedRoom={setSelectedRoom}
+                    userRoomId={personalInfo.roomId}
+                    changing={isOnChange[0]}
+                  />
+                );
+              })}
+          </WrapperRooms>
+        </>
+      ) : (
+        <></>
+      )}
+      {selectedHotel && selectedRoom ? (
+        <ReserveButton onClick={handleReserve}>RESERVAR QUARTO</ReserveButton>
+      ) : (
+        ""
+      )}
     </Container>
-  )
   );
 }
 
-const Container = styled.div`
-`;
+const Container = styled.div``;
 
 const CardsWrapper = styled.div`
   display: flex;
@@ -164,7 +173,6 @@ const CardsWrapper = styled.div`
 
 const WrapperRooms = styled.div`
   display: flex;
-
 `;
 
 const PaddingSubTitle = styled.div`
@@ -176,7 +184,7 @@ const ReserveButton = styled.button`
   margin-top: 46px;
   width: 182px;
   height: 37px;
-  background: #E0E0E0;
+  background: #e0e0e0;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
   margin-bottom: 100px;
